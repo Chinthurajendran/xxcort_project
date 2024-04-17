@@ -1,0 +1,34 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<section class="content-main" style="width: 130%;">
+    <div class="row" style="margin-left: 5%;">
+        <div class="col-9">
+            <div class="content-header">
+                <h2 class="content-title">Edit Product</h2>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="POST">
+                        {%csrf_token%} 
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Product title</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="name" id="product_name" value='{{category_data.name}}' required="">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Full description</label>
+                            <textarea placeholder="Type here" class="form-control" name="message" rows="4" required="">{{category_data.description}}</textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Offer %</label>
+                            <input type="text" placeholder="Type here" class="form-control" name="category_offer" value='{{category_data.offer}}' required="">
+                        </div>
+                        <button class="btn btn-md rounded font-sm hover-up" style="margin-left: 40%;">Update</button>
+                    </form>
+                </div>
+            </div> <!-- card end// -->
+        </div>
+    </div>
+</section> <!-- content-main end// -->
+{% endblock %}

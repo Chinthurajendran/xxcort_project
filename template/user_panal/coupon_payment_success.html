@@ -1,0 +1,31 @@
+<!-- check_out_success.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Transaction Successful!',
+                text: 'Your amount has been deducted from wallet successfully.',
+                showConfirmButton: true,  // Show the OK button
+                confirmButtonText: 'OK',  // Customize the OK button text
+                allowOutsideClick: false  // Prevent closing the alert by clicking outside
+            }).then(function(result) {
+                // Redirect the user to another page when they click OK
+                if (result.isConfirmed) {
+                    window.location.href = "{% url 'coupon_razorpay_payment' %}";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

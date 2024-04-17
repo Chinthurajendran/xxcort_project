@@ -1,0 +1,73 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">User List </h2>
+            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+        </div>
+        <!-- <div>
+            <input type="text" placeholder="Search order ID" class="form-control bg-white">
+        </div> -->
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <form class="searchform" action="{% url 'admin_search' %}" method="get" style="width: 50%;">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term" name="search" style="background-color: rgb(255, 255, 255);">
+                        <button class="btn btn-light bg" type="submit"> <i class="material-icons md-search"></i></button>
+                    </div>
+                </form>
+                <div class="input-group">
+                    <a href="{% url 'admin_user_info_create' %}"><button class="btn btn-md rounded font-sm hover-up" style="margin-top:-94%;margin-left: 1435%;">Create</button></a>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Block/Unblock</th>
+                            <th scope="col">Edite</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for items in data%}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><b>{{items.username}}</b></td>
+                            <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template>{{items.email}}</td>
+
+                            <td>
+                                {% if items.blocked %}
+                                    <a href="{% url 'block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Block</a>
+                                {% else %}
+                                    <a href="{% url 'block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Unblock</a>
+                                {% endif %}
+                            </td>
+                            <td><a href="{% url 'admin_user_info_edit' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Edit</button></a></td>
+                            <td><a href="{% url 'admin_delete' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Delete</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+
+
+{% endblock %}

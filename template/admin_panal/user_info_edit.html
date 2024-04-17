@@ -1,0 +1,26 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<section class="content-main mt-80 mb-80">
+    <div class="card mx-auto card-login">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Edit user</h4>
+            <form method="POST">
+                {%csrf_token%} 
+                <div class="mb-3">
+                    <input id="login__username" type="text" name="username"  class="form-control" value={{data.username}} placeholder="Username" required>
+                </div>
+
+                <div class="mb-3">
+                    <input id="login__email" type="email"  name="email" class="form-control" value={{data.email}} placeholder="Email id" required>
+                </div>
+                <div class="mb-3">
+                    <input class="form-control" name="password" value={{data.Password}} placeholder="Password" type="password">
+                </div> <!-- form-group// -->
+                <div class="mb-4">
+                    <button type="submit" class="btn btn-primary w-100"> Edit ID </button>
+                </div> <!-- form-group// -->
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

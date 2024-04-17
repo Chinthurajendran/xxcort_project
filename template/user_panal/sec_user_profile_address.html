@@ -1,0 +1,61 @@
+{% extends "user_panal/user_index.html" %}
+{% load static %}
+
+{% block main %} 
+<section class="content-main mt-80 mb-80" >
+    <div class="card mx-auto card-login" style="margin-top: -6%;">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Shipping Address</h4>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            
+            {% if not user_addresses %}
+                <!-- Display the form only if the user has not created the address -->
+                <p style="color: red;">"Click create to add address"</p>
+                <div class="mb-4">
+                    <a href="{% url 'sec_user_profile_address_create' %}"><button type="submit" class="btn btn-primary w-100">Create</button></a>
+                </div> <!-- form-group// -->
+                <!-- End of form -->
+            {% else %}
+                <!-- If the user has already created the address, display it -->
+                    {% for address in user_addresses %}
+                    <div class="mb-3">
+                        <label>Address</label>
+                        <input class="form-control square" name="address" type="text" value="{{ address.address }}" disabled> 
+                    </div> <!-- form-group// -->
+                    <div class="mb-3">
+                        <label>Locality</label>
+                        <input class="form-control square" name="locality" type="text" value="{{ address.locality }}" disabled> 
+                    </div> <!-- form-group// -->
+                    <div class="mb-3">
+                        <label>Pincode</label>
+                        <input class="form-control square" name="pincode" type="text" value="{{ address.pincode }}" disabled> 
+                    </div> <!-- form-group// -->
+                    <div class="mb-3">
+                        <label>District</label>
+                        <input class="form-control square" name="district" type="text" value="{{ address.district }}" disabled> 
+                    </div> <!-- form-group// -->
+                    <div class="mb-3">
+                        <label>State</label>
+                        <input class="form-control square" name="state" type="text" value="{{ address.state }}" disabled> 
+                    </div> <!-- form-group// -->
+                    <div class="mb-4">
+                        <a href="{% url 'sec_user_profile_address_edit' address.id %}"><button type="submit" class="btn btn-primary w-100"> Edit </button></a>
+                    </div> <!-- form-group// -->
+                    <div class="mb-4" style="margin-top: -4%;">
+                        <a href="{% url 'sec_user_profile_address_delete' address.id %}"><button type="submit" class="btn btn-primary w-100"> Delete </button></a>
+                    </div> <!-- form-group// -->
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+
+

@@ -1,0 +1,67 @@
+
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Coupons</h2>
+            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+        </div>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto"> 
+                    <input type="text" placeholder="Search..." class="form-control">
+                    <a href="{% url 'coupons_create' %}"><button class="btn btn-md rounded font-sm hover-up" style="margin-top:-20%;margin-left: 290%;">Create</button></a>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body" style="overflow:auto; overflow-x: scroll;">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Coupon_code</th>
+                            <th>Discount</th>
+                            <th>Count</th>
+                            <th>Action</th>
+                            <th>Date</th>
+                            <th scope="col">Edite</th>
+                            <th scope="col">Delete</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for items in coupons_data %}
+                        <tr>    
+                            <td>{{ forloop.counter}}</td>
+                            <td><b>{{items.coupon_code}}</b></td>
+                            <td><b>{{items.discount_percentage}}</b></td>
+                            <td><b>{{items.usage_count}}</b></td>
+                            <td><b>                            
+                                {% if items.is_active %}
+                                <a href="{% url 'coupons_block' items.id %}" class="btn btn-md rounded font-sm hover-up">Block</a>
+                                {% else %}
+                                <a href="{% url 'coupons_block' items.id %}" class="btn btn-md rounded font-sm hover-up">Unblock</a>
+                                {% endif %}
+                            </b></td>
+                            <td><b>{{items.date}}</b></td>   
+                            <td><a href="{%url 'coupons_edit' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Edit</button></a></td>
+                            <td><a href="{%url 'coupons_delete' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Delete</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+{% endblock %}

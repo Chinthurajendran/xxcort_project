@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Statistics</title>
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Select Graph Type
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{% url 'generate_monthly_data' %}" id="yearlyOption">Yearly</a>
+          <a class="dropdown-item" href="#" id="monthlyOption">Monthly</a>
+        </div>
+      </div>
+      
+      <canvas id="myChart" width="400" height="400"></canvas>
+      
+    <h1>Monthly Delivered Orders</h1>
+    <canvas id="monthlyChart"></canvas>
+
+    <h1>Yearly Delivered Orders</h1>
+    <canvas id="yearlyChart"></canvas>
+
+    <script>
+        var monthlyData = {{ monthly_data|safe }};
+        var yearlyData = {{ yearly_data|safe }};
+    
+        var monthlyChartCtx = document.getElementById('monthlyChart').getContext('2d');
+        var monthlyChart = new Chart(monthlyChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Monthly Delivered Orders',
+                    data: monthlyData,
+                    backgroundColor: 'blue',
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Orders'
+                        }
+                    }
+                }
+            }
+        });
+    
+        var yearlyChartCtx = document.getElementById('yearlyChart').getContext('2d');
+        var yearlyChart = new Chart(yearlyChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['2020', '2021', '2022', '2023', '2024'],
+                datasets: [{
+                    label: 'Yearly Delivered Orders',
+                    data: Object.values(yearlyData),
+                    backgroundColor: 'green',
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Number of Orders'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var chartData = {};  // To store chart data
+        
+        // Function to fetch and update data for the selected graph type
+        function updateChart(graphType) {
+            // AJAX request to fetch data based on selected graph type
+            $.ajax({
+                url: '/fetch_data/',
+                type: 'POST',
+                data: {
+                    graph_type: graphType
+                },
+                success: function(data) {
+                    chartData = data;
+                    renderChart();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        }
+        
+        // Function to render the chart
+        function renderChart() {
+            // Code to render chart using chartData
+            // Example:
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(chartData),
+                    datasets: [{
+                        label: 'Number of Orders',
+                        data: Object.values(chartData),
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    // Chart options
+                }
+            });
+        }
+        
+        // Event listener for dropdown change
+        $('#yearlyOption').click(function() {
+            updateChart('yearly');
+        });
+        
+        $('#monthlyOption').click(function() {
+            updateChart('monthly');
+        });
+    });
+    </script>
+    
+    
+    
+    
+</body>
+</html>

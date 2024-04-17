@@ -1,0 +1,89 @@
+{% extends "user_panal/base.html" %}
+{% block main %}
+{% load socialaccount %}
+<style>.messages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .messages li {
+    padding: 10px;
+    margin: 0 0 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  
+  /* Success message style */
+  .messages li.success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+  }
+  
+  /* Error message style */
+  .messages li.error {
+    color:#e62a38 ;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+  }</style>
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}" rel="nofollow">Home</a>
+                <span></span> Login
+            </div>
+        </div>
+    </div>
+    <section class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        <div class="col-lg-5" style="width: 50%; margin-left: 25%;">
+                            <div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
+                                <div class="padding_eight_all bg-white">
+                                    <div class="heading_s1">
+                                        <h3 class="mb-30">Login</h3>
+                                    </div>
+                                    {% if messages %}
+                                        <ul class="messages">
+                                            {% for message in messages %}
+                                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    <form method="post">
+                                        {%csrf_token%} 
+                                        <div class="form-group">
+                                            <input type="text" required="" name="email" placeholder="Your Email" required="">
+                                        </div>
+                                        <div class="form-group">
+                                            <input required="" type="password" name="password" placeholder="Password" required="">
+                                        </div>
+                                        <div class="login_footer form-group">
+                                            <a class="text-muted" href="{% url 'forgot_password' %}">Forgot password?</a>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Log in</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="divider-text-center mt-15 mb-15">
+                                    <span> or</span>
+                                </div>
+                                <ul class="btn-login list_none text-center mb-15">
+                                    <li><a href="{% provider_login_url "google" %}" class="btn btn-google hover-up">Login With Google</a></li>
+                                </ul>
+                                <div class="text-muted text-center">New to xxcort ? Create an account  <a href="{% url 'signup' %}">Sign up now</a></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}

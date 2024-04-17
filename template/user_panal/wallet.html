@@ -1,0 +1,77 @@
+
+{% extends "user_panal/user_index.html" %}
+{% load static %}
+{% block main %} 
+    <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <div style="max-width: 600px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <h1 style="font-size: 24px; color: #333; margin-bottom: 20px; text-align: center;">Your Wallet</h1>
+            <div style="text-align: center; margin-bottom: 30px;">
+                <p style="font-size: 30px; color: #007bff; margin-bottom: 10px; font-weight: bold;">Your current balance: ₹{{ wallet_info.balance }}</p>
+                <br><br><br>  
+                <form action="{% url 'razorpay_wallet_add'  %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="text" name="amount" placeholder="Enter amount to add" required style="padding: 5px; margin-right: 10px;" oninput="formatCurrency(this)"><br><br>
+
+                    <button type="submit" class="btn btn-success">Add Cash</button>
+            
+                </form><br><br>
+                <form action="{% url 'wallet_point'  %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="text" name="code" placeholder="Enter code" required style="padding: 5px; margin-right: 10px;">
+
+                    <button type="submit" class="btn btn-warning">Redeem reward points</button>
+            
+                </form>
+            </div>
+        </div>
+        <h4 style="margin-left: 2%;">Wallet History</h4> 
+        <div class="card mb-4" style="overflow:auto; height: 270px;">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead style="font-size: large;">
+                            <tr>
+                                <th>Date</th>
+                                <th>Transaction Type</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-weight: bold;">
+                            {% for transaction in transactions %}
+                            <tr>
+                                <td>{{ transaction.date_created }}</td>
+                                <td>{{ transaction.transaction_type }}</td>
+                                {% if transaction.transaction_type == 'Debit' %}
+                                <td style="color: red;">-{{ transaction.amount }}</td>
+                                {% else  %}
+                                <td style="color: green;">{{ transaction.amount }}</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table> <!-- table-responsive.// -->
+                </div>
+            </div> <!-- card-body end// -->
+        </div>
+    </body>
+    <script>
+        function formatCurrency(input) {
+            // Remove existing commas and periods
+            let value = input.value.replace(/[,.]/g, '');
+    
+            // Format the number with commas for thousands separator
+            value = Number(value).toLocaleString('en-IN');
+    
+            // Update the input value
+            input.value = value;
+        }
+    </script>
+    
+{% endblock %}

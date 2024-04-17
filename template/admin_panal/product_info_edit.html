@@ -1,0 +1,116 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<form method="POST"  enctype="multipart/form-data">
+{%csrf_token%} 
+<section class="content-main">
+    <div class="row">
+        <div class="col-6">
+            <div class="content-header">
+                <h2 class="content-title">Edit Product</h2>
+            </div>
+        </div>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>1. General info</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Product title</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="product_name" value="{{product_details.name}}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Description</label>
+                                <textarea placeholder="Type here" class="form-control" name="product_description" rows="4">{{product_details.product_description}}</textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Product code</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="product_code" value="{{product_details.code}}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Size</label><br>
+                                <label class="form-label" style="font-size:smaller;">Small</label>
+                                <input type="text" placeholder="small" class="form-control" name="small" value="{{product_details.small}}" style="margin-bottom: 2%;">
+                                <label class="form-label" style="font-size:smaller;">Medium</label>
+                                <input type="text" placeholder="mediam" class="form-control" name="medium" value="{{product_details.medium}}" style="margin-bottom: 2%;">
+                                <label class="form-label" style="font-size:smaller;">Large</label>
+                                <input type="text" placeholder="large" class="form-control" name="large" value="{{product_details.large}}">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Product Type</label>
+                                <select class="form-select" name="products">
+                                <option>Select an option</option>
+                                {% for category in product_categorys_edit %}
+                                <option value="{{ category.id }}" {% if category.id == product_details.product_type.id %} selected {% endif %}>{{ category.name }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>2. Pricing</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Cost in INR</label>
+                                <input type="text" placeholder="$00.0" class="form-control" style="margin-bottom: 3%;"name="price" value="{{product_details.price}}">
+                                <label class="form-label">Offer</label>
+                                <input type="text" placeholder="20%" class="form-control" style="margin-bottom: 3%;" name="offer" value="{{product_details.offer}}">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    <hr class="mb-4 mt-0">
+                    
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>3. Media</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Images1</label>
+                                {% if product_details.image1 %}
+                                    <img src="{{ product_details.image1.url }}" alt="Image 1">
+                                {% endif %}
+                                <input class="form-control" type="file" name="image1">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Images2</label>
+                                {% if product_details.image2 %}
+                                    <img src="{{ product_details.image2.url }}" alt="Image 2">
+                                {% endif %}
+                                <input class="form-control" type="file" name="image2">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Images3</label>
+                                {% if product_details.image3 %}
+                                    <img src="{{ product_details.image3.url }}" alt="Image 3">
+                                {% endif %}
+                                <input class="form-control" type="file" name="image3">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- .row end// -->
+                    <div class="text-center" >
+                        <button class="btn btn-md rounded font-sm hover-up" style="margin-left: 40%;    ">Save to draft</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section> <!-- content-main end// -->
+</form>
+{% endblock %}

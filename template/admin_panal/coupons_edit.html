@@ -1,0 +1,48 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<form method="post" enctype="multipart/form-data">
+{%csrf_token%} 
+<section class="content-main" style="margin-left: 25%; width: 100%;">
+    <div class="row">
+        <div class="col-6">
+            <div class="content-header">
+                <h2 class="content-title">Edit Coupon</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-lg-6">
+            <div class="card mb-4" style="width: 85%;">
+                <div class="card-body" style="margin-left: 11%; width: 103%;">
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="mb-4">
+                                    {% if messages %}
+                                    <ul class="messages">
+                                        {% for message in messages %}
+                                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    <label class="form-label">Coupon code</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="coupon_code" required="" value="{{coupon_details.coupon_code}}">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Offer</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="coupon_offer" required="" value="{{coupon_details.discount_percentage}}">
+                                </div>
+                            </div> <!-- col.// -->
+                        </div> <!-- row.// -->
+                        <div style="margin-left: -20%;">
+                            <button class="btn btn-md rounded font-sm hover-up" style="margin-left: 40%;">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section> <!-- content-main end// -->\
+</form>
+{% endblock %}

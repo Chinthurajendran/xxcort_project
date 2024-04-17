@@ -1,0 +1,176 @@
+{% extends "user_panal/base.html" %}
+{% load static %}
+{% block main %} 
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow">Home</a>
+                <span></span> Shop
+                <span></span> Checkout
+            </div>
+        </div>
+    </div>
+<form method="post" action="{% url 'coupon_create_order' %}">
+        {% csrf_token %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <section class="mt-50 mb-50">
+        <div class="container">
+            <form method="post" action="{% url 'coupon_create_order' %}">
+                {% csrf_token %}
+            <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-25">
+                            <h4>Billing Details</h4>
+                        </div>
+                        <div class="ship_detail">
+                            <div class="form-group">
+                                <div class="chek-form">
+                                    <div class="custome-checkbox">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="Billingaddress" value="Billing">
+                                        <label class="form-check-label label_info" data-bs-toggle="collapse" data-target="#Billing" href="#Billing" aria-controls="Billing" for="Billingaddress"><span>Ship to a Billing address?</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="Billing" class="different_address collapse in">
+                            {% for bill in add1 %}
+                            <div class="form-group">
+                                <input type="text" required="" name="fname" placeholder="Name *" value = "{{bill.user.username}}" >
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="billing_address" required="" placeholder="Address *" value = "{{bill.address}}">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="city" placeholder="City / Town *" value = "{{bill.locality}}">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="district" placeholder="District / Town *" value = "{{bill.district}}">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="state" placeholder="State / County *" value = "{{bill.state}}">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="zipcode" placeholder="Postcode / ZIP *" value = "{{bill.pincode}}">
+                            </div>
+                            <div class="form-group">
+                                <input required="" type="text" name="email" placeholder="Email address *" value = "{{bill.user.email}}">
+                            </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+                        <div class="ship_detail">
+                            <div class="form-group">
+                                <div class="chek-form">
+                                    <div class="custome-checkbox">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="differentaddress" value="shipping_info">
+                                        <label class="form-check-label label_info" data-bs-toggle="collapse" data-target="#collapseAddress" href="#collapseAddress" aria-controls="collapseAddress" for="differentaddress"><span>Ship to a Shipping Address?</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapseAddress" class="different_address collapse in">
+                                    {% for ship in add2 %}
+                                    <div class="form-group">
+                                        <input type="text" required="" name="fname" placeholder="Name *" value = "{{ship.user.username}}" >
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="shipping_address" required="" placeholder="Address *" value = "{{ship.address}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input required="" type="text" name="shipping_city" placeholder="City / Town *" value = "{{ship.locality}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input required="" type="text" name="shipping_district" placeholder="District / Town *" value = "{{ship.district}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input required="" type="text" name="shipping_state" placeholder="State / County *" value = "{{ship.state}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input required="" type="text" name="shipping_pincode" placeholder="Postcode / ZIP *" value = "{{ship.pincode}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <input required="" type="text" name="email" placeholder="Email address *" value = "{{ship.user.email}}">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                    </div>
+
+                
+                <div class="col-md-6">
+                    <div class="order_review">
+                        <div class="mb-20">
+                            <h4>Your Orders</h4>
+                        </div>
+                        <div class="table-responsive order_table text-center">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">Product</th>
+                                        <!-- <th>Total</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cart in cart_info %}
+                                    <tr>
+                                        <td class="image product-thumbnail"><img src='{{ cart.product_info.image1.url}}' alt="#"></td>
+                                        <td>
+                                            <h5><a href="shop-product-full.html">{{cart.product_info.name}}</a></h5> <span class="product-qty">x {{ cart.quantity}}</span>
+                                        </td>
+                                        <!-- <td>₹{{  sub_total }}</td> -->
+                                    </tr>
+                                    {% endfor %}
+                                    <tr>
+                                        <th>SubTotal</th>
+                                        <td class="product-subtotal" colspan="2">₹{{ sub_total }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Shipping</th>
+                                        <td colspan="2"><em>₹{{ shipping }}</em></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Discount</th>
+                                        <td colspan="2"><em>₹{{ offer }}</em></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900">₹{{ Total }}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                        <div class="payment_method">
+                            <div class="mb-25">
+                                <!-- <h5>Payment</h5> -->
+                            </div>
+                            <div class="payment_option">
+                                    <button class="btn btn-fill-out btn-block mt-30" >Place Order</button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+</main>
+<script>
+    // Retrieve quantity and offer price from HTML elements
+    var quantity = parseInt(document.getElementById("quantity").innerText);
+    var offerPrice = parseFloat(document.getElementById("offer-price").innerText);
+
+    // Calculate total price using the calculateTotalPrice function
+    var totalPrice = calculateTotalPrice(quantity, offerPrice);
+
+    // Display the total price in the HTML element
+    document.getElementById("total-price").innerText = totalPrice;
+</script>
+
+{% endblock %}

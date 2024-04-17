@@ -1,0 +1,188 @@
+{% extends "user_panal/user_index.html" %}
+{% load static %}
+{% block main %}
+    <section class="content-main" style="margin-left: 4%; width: 111%; margin-top: 4%;">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Order List </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card mb-4">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" style="width: 100%;">
+                                <thead style="font-size: larger;">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Customer name</th>
+                                        <th>Price</th>
+                                        <th>Payment status</th>
+                                        <th>Payment method</th>
+                                        <th>Order status</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: medium;">
+
+                                    {% for orders in order_info%}
+                                    <tr>
+                                        <td>{{ order_info.start_index|add:forloop.counter0 }}</td>
+                                        <td><b>{{orders.user.username}}</b></td>
+                                        <td>₹{{orders.total_amount}}</td>
+                                        <td>
+                                            {% if orders.payment_method == 'COD' and orders.order_status == 'Delivered' %}
+                                            <span class="badge rounded-pill alert-primary text-primary">Amount is paid</span>
+                                            {% elif orders.payment_status == 'Pending' %}
+                                            <span class="badge rounded-pill alert-success text-success">{{ orders.payment_status }}</span>
+                                            {% elif orders.payment_status == 'Amount is paid' %}
+                                            <span class="badge rounded-pill alert-primary text-primary">{{ orders.payment_status }}</span>
+                                            {% else %}
+                                            <span class="badge rounded-pill alert-danger text-danger">{{ orders.payment_status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{orders.payment_method}}</td>
+                                        <td>
+                                        {% if orders.order_status == 'Pending' %}
+                                        <span class="badge rounded-pill alert-success">{{orders.order_status}}</span>
+                                        {% elif orders.order_status == 'Shipped' %}
+                                        <span class="badge rounded-pill alert-warning">{{orders.order_status}}</span>
+                                        {% elif orders.order_status == 'Delivered' %}
+                                        <span class="badge rounded-pill alert-primary">{{orders.order_status}}</span>
+                                        {% elif orders.order_status == 'Cancelled' %}
+                                        <span class="badge rounded-pill alert-danger">{{orders.order_status}}</span>
+                                        {% elif orders.order_status == 'processing' %}
+                                        <span class="badge rounded-pill alert-dark">Processing</span>
+                                        {% endif %}
+                                        </td>
+
+                                        {% if orders.order_status == 'Cancelled' %}
+                                            <td>{{orders.order_date}}</td>
+                                            {% if orders.order_status == 'Delivered' %}
+                                            <td class="text-end"> <a href="{% url 'refund' orders.id %}"><button disabled class="btn btn-md rounded font-sm">Return</button></a></td>
+                                            {% else  %}
+                                            <td class="text-end"> <a href="{% url 'order_cancel' orders.id %}"><button disabled class="btn btn-md rounded font-sm">Cancel</button></a></td>
+                                            {% endif %}
+                                        {% else %}
+                                            <td>{{orders.order_date}}</td>
+                                            {% if orders.order_status == 'Delivered' %}
+                                            <td class="text-end"> <a href="{% url 'submit_cancellation_reason' orders.id %}">
+                                                <button class="btn btn-md rounded font-sm cancel-button" data-order-id="{{ orders.id }}">Return</button></a>
+                                            </td>
+                                            <!-- <td class="text-end"> <a href="{% url 'refund' orders.id %}"><button class="btn btn-md rounded font-sm">Return</button></a></td> -->
+                                            {% else  %}
+                                            <td class="text-end"> <a href="{% url 'submit_cancellation_reason' orders.id %}">
+                                                <button class="btn btn-md rounded font-sm cancel-button" data-order-id="{{ orders.id }}">Cancel</button></a>
+                                            </td>
+                                            {% endif %}
+                                        {% endif %}
+                                        <td class="text-end"> <a href="{% url 'order_in_detail' orders.id  %}"><button  class="btn btn-md rounded font-sm">Details</button></a></td>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive //end -->
+                    </div> <!-- card-body end// -->
+                </div> <!-- card end// -->
+            </div>
+        </div>
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+    
+                    {% for i in order_info.paginator.page_range %}
+                        {% if order_info.number == i %}
+                            <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                </ul>
+            </nav>
+        </div> 
+    </section> <!-- content-main end// -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        // Attach event listener to a parent element
+        document.addEventListener('click', function(event) {
+            // Check if the clicked element has the 'cancel-button' class
+            if (event.target.classList.contains('cancel-button')) {
+                event.preventDefault(); // Prevent default link behavior
+                
+                const orderId = event.target.dataset.orderId; // Get the order ID from data attribute
+                Swal.fire({
+                    title: 'Enter reason for cancellation',
+                    input: 'text',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Submit',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (reason) => {
+                        return fetch(`/submit-cancellation-reason/${orderId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: JSON.stringify({ reason: reason })
+                        })
+                        .then(response => {
+                            console.log(response); // Log the response for debugging
+                            if (!response.ok) {
+                                throw new Error(response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Reload the page upon successful submission
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                throw new Error(data.error);
+                            }
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(`Request failed: ${error}`);
+                        });
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                });
+            }
+        });
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+    
+    
+        
+
+        
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Category List </h2>
+        </div>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto"> 
+                    <input type="text" placeholder="Search..." class="form-control">
+                    <a href="{% url 'product_type_create' %}"><button class="btn btn-md rounded font-sm hover-up" style="margin-top:-20%;margin-left: 290%;">Create</button></a>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Offer</th>
+                            <th scope="col">Block/Unblock</th>
+                            <th scope="col">Edite</th>
+                            <th scope="col">Delete</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for items in data%}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><b>{{items.name}}</b></td>
+                            <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template>{{items.description}}</td>
+                            <td><b>{{items.offer}}</b></td>
+                            <td>                
+                            {% if items.is_active %}
+                                <a href="{% url 'category_block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Block</a>
+                            {% else %}
+                                <a href="{% url 'category_block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Unblock</a>
+                            {% endif %}</td>
+                            <td><a href="{% url 'product_type_edit' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Edit</button></a></td>
+                            <td><a href="{% url 'product_type_delete' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Delete</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+</section> <!-- content-main end// -->
+{% endblock %}

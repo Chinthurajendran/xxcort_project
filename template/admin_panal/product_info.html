@@ -1,0 +1,101 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Product List </h2>
+        </div>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto"> 
+                    <input type="text" placeholder="Search..." class="form-control">
+                    <a href="{% url 'admin_product_info_create' %}"><button class="btn btn-md rounded font-sm hover-up" style="margin-top:-20%;margin-left: 290%;">Create</button></a>
+                </div>
+            </div>
+        </header> <!-- card-header end// -->
+        <div class="card-body" style="overflow:auto; overflow-x: scroll; height: 400px;">
+            <div class="table-responsive" style="width: 150%;">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#ID</th>
+                            <th scope="col">Product name</th>
+                            <th scope="col">Description</th>
+                            <th scope="col" >Product code</th>
+                            <th scope="col" style="width: 7%;">Product type</th>
+                            <th scope="col" style="width: 5%;">Images</th>
+                            <th scope="col" style="width: 5%;">Images</th>
+                            <th scope="col" style="width: 5%;">Images</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Offer</th>
+                            <th scope="col" style="width: 5%;">Small</th>
+                            <th scope="col" style="width: 5%;">Mediam</th>
+                            <th scope="col" style="width: 5%;">Large</th>
+                            <th scope="col" style="width: 5%;">Stock</th>
+                            <th scope="col" style="width: 5%;">Offer-price</th>
+                            <th scope="col">Block/Unblock</th>
+                            <th scope="col">Edite</th>
+                            <th scope="col">Delete</th> 
+                        </tr>
+                    </thead>
+                    <tbody style="align-items: center;">
+                        {% for items in product_lists%}
+                        <tr>
+                            <td>{{ product_lists.start_index|add:forloop.counter0 }}</td>
+                            <td><b>{{items.name}}</b></td>
+                            <td ><b>{{items.product_description}}</b></td>
+                            <td><b>{{items.code}}</b></td>
+                            <td><b>{{items.product_type}}</b></td>   
+                            <td><b><img src={{items.image1}} style="height: 90px; width: 70PX;" ></b></td>
+                            <td><b><img src={{items.image2}} style="height: 90px; width: 70PX;" ></b></td>
+                            <td><b><img src={{items.image3}} style="height: 90px; width: 70PX;" ></b></td>
+                            <td><b>₹{{items.price}}</b></td>
+                            <td><b>{{items.offer}}%</b></td>
+                            <td><b>{{items.small}} Pcs</b></td>
+                            <td><b>{{items.medium}} Pcs</b></td>
+                            <td><b>{{items.large}} Pcs</b></td>
+                            <td><b>{{items.stock}} Pcs</b></td>
+                            <td><b>₹{{items.offer_price}}</b></td>
+                            <td>                                
+                            {% if items.is_active %}
+                                <a href="{% url 'products_block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Block</a>
+                            {% else %}
+                                <a href="{% url 'products_block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Unblock</a>
+                            {% endif %}</td>
+                            <!-- <td><span class="badge rounded-pill alert-warning">Pending</span></td> -->
+                            <td><a href="{% url 'admin_product_info_edit' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Edit</button></a></td>
+                            <td><a href="{% url 'admin_product_info_delete' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Delete</button></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+    </div> <!-- card end// -->
+
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+
+                {% for i in product_lists.paginator.page_range %}
+                    {% if product_lists.number == i %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ i }}">0{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">0{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                
+            </ul>
+        </nav>
+    </div>     
+</section> <!-- content-main end// -->
+{% endblock %}

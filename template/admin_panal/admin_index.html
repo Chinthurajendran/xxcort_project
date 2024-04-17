@@ -1,0 +1,231 @@
+{% extends "admin_panal/base.html" %}
+{% load static %}
+{% block main %} 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<section class="content-main" >
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Dashboard </h2>
+            <p>Whole data about your business here</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-primary-light"><i></i> ₹</span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Revenue</h6>
+                        <span>₹{{ amount }}</span>
+                        <span class="text-sm">
+                            Shipping fees are included
+                        </span>
+                    </div>
+                </article>
+            </div> 
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext">
+                    <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Orders</h6> <span>{{ order_count }}</span>
+                        <span class="text-sm">
+                            Excluding orders in transit
+                        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card card-body mb-4">
+                <article class="icontext"> 
+                    <span class="icon icon-sm rounded-circle bg-warning-light">
+                        <img src="{% static 'admin_panal/assets/imgs/discount1.png' %}" alt="" style="width: 22px;height: 22.4px; margin-bottom: -7%;">
+                        <i ></i>
+                        </span>
+                    <div class="text">
+                        <h6 class="mb-1 card-title">Coupons</h6> <span>{{ total_coupon_usage }}</span>
+                        <span class="text-sm"> 
+                            In {{ total_coupon_codes }} Coupons
+                        </span>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5" style="width: 50%;height: 50%; margin-left: 5%;">
+        <!-- Dropdown button for selecting graph type -->
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-bottom: 10%;">
+          <label class="btn btn-primary active">
+            <input type="radio" name="graphType" id="yearlyOption" autocomplete="off" checked> Yearly
+          </label>
+          <label class="btn btn-primary">
+            <input type="radio" name="graphType" id="monthlyOption" autocomplete="off"> Monthly
+          </label>
+        </div>
+    
+        <!-- Canvas for the monthly chart -->
+        <canvas id="monthlyChart" width="400" height="400" style="display: none;"></canvas>
+    
+        <!-- Canvas for the yearly chart -->
+        <canvas id="yearlyChart" width="400" height="400" style="display: none;"></canvas>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-8 col-lg-12">
+            <br>
+
+            <div style="margin-left: 1%;">
+                <center><h4>Sales Report</h4></center>
+                <p>PDF Report</p>
+                <a href="{% url 'sales-report' %}?report_type=daily&format=pdf" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Daily PDF report</a>&nbsp
+                <a href="{% url 'sales-report' %}?report_type=weekly&format=pdf" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Weekly PDF report</a>&nbsp
+                <a href="{% url 'sales-report' %}?report_type=monthly&format=pdf" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Yearly PDF report</a><br><br>
+                <p>Excel Report</p>
+                <a href="{% url 'sales-report' %}?report_type=weekly&format=excel" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Weekly Excel report</a>&nbsp
+                <a href="{% url 'sales-report' %}?report_type=daily&format=excel" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Daily Excel report</a>&nbsp
+                <a href="{% url 'sales-report' %}?report_type=monthly&format=excel" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Yearly Excel report</a><br><br>
+                <p>Custom sales Report</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#customReportModal">
+                    Custom report
+                </button>
+                <div class="modal fade" id="customReportModal" tabindex="-1" role="dialog" aria-labelledby="customReportModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="customReportModalLabel">Custom Date Range</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="{% url 'sales-report' %}" method="GET">
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="start_date">Start Date:</label>
+                                        <input type="date" class="form-control" id="start_date" name="start_date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="end_date">End Date:</label>
+                                        <input type="date" class="form-control" id="end_date" name="end_date">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Generate PDF Report</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+  <!-- Include jQuery and Chart.js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      // Function to render the monthly chart
+      function renderMonthlyChart() {
+        $.ajax({
+          url: "{% url 'generate_monthly_data' %}",
+          method: "GET",
+          success: function(data) {
+            var ctx = document.getElementById('monthlyChart').getContext('2d');
+            var monthlyChart = new Chart(ctx, {
+              type: 'bar', 
+              data: {
+                labels: Object.keys(data),
+                datasets: [{
+                  label: 'Monthly Delivered Orders',
+                  data: Object.values(data),
+                  backgroundColor: 'blue',
+                }]
+              },
+              options: {
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: 'Month'
+                    }
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Number of Orders'
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+      }
+
+      // Function to render the yearly chart
+      function renderYearlyChart() {
+        $.ajax({
+          url: "{% url 'generate_yearly_data' %}",
+          method: "GET",
+          success: function(data) {
+            var ctx = document.getElementById('yearlyChart').getContext('2d');
+            var yearlyChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: Object.keys(data),
+                datasets: [{
+                  label: 'Yearly Delivered Orders',
+                  data: Object.values(data),
+                  backgroundColor: 'green',
+                }]
+              },
+              options: {
+                scales: {
+                  x: {
+                    title: {
+                      display: true,
+                      text: 'Year'
+                    }
+                  },
+                  y: {
+                    title: {
+                      display: true,
+                      text: 'Number of Orders'
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+      }
+
+      // Render initial charts
+      renderMonthlyChart();
+      renderYearlyChart();
+
+      $('#monthlyChart').show();
+      // Dropdown event listener
+      $('#yearlyOption').click(function() {
+        // Hide monthly chart, show yearly chart
+        $('#monthlyChart').hide();
+        $('#yearlyChart').show();
+      });
+
+      $('#monthlyOption').click(function() {
+        // Hide yearly chart, show monthly chart
+        $('#yearlyChart').hide();
+        $('#monthlyChart').show();
+      });
+    });
+  </script>
+</section>
+{% endblock %}

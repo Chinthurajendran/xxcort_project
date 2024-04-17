@@ -1,0 +1,187 @@
+{% extends "user_panal/user_index.html" %}
+{% load static %}
+{% block main %}
+<br>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <center>
+                        <h2 class="content-title card-title">Order detail</h2>
+                    </center>  
+                </div>
+                
+            </div>
+            <div class="progress" style="margin-bottom: .5%;">
+                {% if details.order_status == 'Pending' %}
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 33.3%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"> {{details.order_status}} </div>
+                {% elif details.order_status == 'Shipped' %}
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 33.3%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"> Pending </div>
+                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 33.3%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"> {{details.order_status}} </div>
+                {% elif details.order_status == 'Delivered' %}
+                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 33.3%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"> Pending </div>
+                <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 33.3%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"> Shipped </div>
+                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 33.3%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"> {{details.order_status}} </div>
+                {% endif %}
+            </div>
+            <div class="card">
+                <header class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                            <span>
+                                <i class="material-icons md-calendar_today"></i> <b>{{details.order_date}}</b>
+                            </span> <br>
+                            <small class="text-muted">Order ID: {{details.id}}</small>
+                        </div>
+                    </div>
+                </header> <!-- card-header end// -->
+                <div class="card-body">
+                    <div class="row mb-50 mt-20 order-info-wrap">
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-person"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Customer</h6>
+                                    <p class="mb-1">
+                                        {{details.user}}
+                                    </p>
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-local_shipping"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Order info</h6>
+                                    <p class="mb-1">
+                                        Shipping : Fargo express <br> 
+                                        Pay method :{{details.payment_method}}<br>
+                                        Status :
+                                        {% if details.payment_method == 'COD' and details.order_status == 'Delivered' %}
+                                        <span class="badge rounded-pill alert-primary text-primary" style="font-size: 12px; width: 64%; margin-top: -16%; margin-left: 34%;">Amount is paid</span>
+                                        {% elif details.payment_status == 'Pending' %}
+                                        <span class="badge rounded-pill alert-success text-success" style="font-size: 12px; width: 46%; margin-top: -16%; margin-left: 34%;">{{ details.payment_status }}</span>
+                                        {% elif details.payment_status == 'Amount is paid' %}
+                                        <span class="badge rounded-pill alert-success text-primary" style="font-size: 12px; width: 64%; margin-top: -16%; margin-left: 34%;">{{ details.payment_status }}</span>
+                                        {% else %}
+                                        <span class="badge rounded-pill alert-danger text-danger" style="font-size: 12px; width: 85%; margin-top: -16%; margin-left: 34%;">{{ details.payment_status }}</span>
+                                        {% endif %}
+                                    
+                                    </p>
+                                    <a href="{% url 'generateinvoice' details.id %}">Download info</a>
+
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                        <div class="col-md-4">
+                            <article class="icontext align-items-start">
+                                <span class="icon icon-sm rounded-circle bg-primary-light">
+                                    <i class="text-primary material-icons md-place"></i>
+                                </span>
+                                <div class="text">
+                                    <h6 class="mb-1">Deliver to</h6>
+                                    <p class="mb-1">
+                                        Address: {{ details.billing_address }} <br> 
+                                        Locality: {{ details.billing_locality }}<br> 
+                                        Pincode: {{ details.billing_pincode }}<br> 
+                                        District: {{ details.billing_district }}<br> 
+                                        State: {{ details.billing_state }}
+                                    </p>
+                                    {% comment %} <a href="#">View profile</a> {% endcomment %}
+                                </div>
+                            </article>
+                        </div> <!-- col// -->
+                    </div> <!-- row // -->
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                      <tr>
+                                            <th width="40%">Product</th>
+                                            <th width="20%">Size</th>
+                                            <th width="20%">Unit Price</th>
+                                            <th width="20%">Quantity</th>
+                                        </tr> 
+                                    </thead>
+                                    <tbody>
+                                        {% for product in Order_products %}
+                                        <tr>
+                                            <td>
+                                                <a class="itemside" href="#">
+                                                    <div class="info">{{ product.product_name}}</div>
+                                                </a>
+                                            </td>
+                                            {% if product.selected_size == 'small' %}
+                                            <td class="price" data-title="Price"><span>Small</span></td>
+                                            {% elif product.selected_size == 'medium' %}
+                                            <td class="price" data-title="Price"><span>Medium</span></td>
+                                            {% elif product.selected_size == 'large' %}
+                                            <td class="price" data-title="Price"><span>Large</span></td>
+                                            {% endif %}
+                                            <td>₹ {{ product.price }}</td>
+                                            <td>X {{ product.quantity }}</td>
+                                        </tr>
+                                        {% endfor %}
+                    
+                                        <tr>
+                                            <td colspan="4">
+                                                <div class="pricing-status">
+                                                    <div class="pricing">
+                                                        <div class="item">
+                                                            <span class="title">Subtotal:</span>
+                                                            <span class="value">₹  {{ total }}</span>
+                                                        </div> 
+                                                        {% if details.coupon != "No Coupon" %}
+                                                        <div class="item">
+                                                            <span class="title">Coupon:</span>
+                                                            <span class="value">₹ {{ details.coupon }}</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if details.coupon == "No Coupon" %}
+                                                        <div class="item">
+                                                            <span class="title">Other Offer:</span>
+                                                            <span class="value">₹ {{ details.offer }}</span>
+                                                        </div>
+                                                        {% endif %}
+                                                        <div class="item">
+                                                            <span class="title">Shipping cost:</span>
+                                                            <span class="value">₹ 100</span>
+                                                        </div>
+                                                        <div class="item">
+                                                            <span class="title">Grand total:</span>
+                                                            <span class="value">₹ {{ details.total_amount }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="status">
+                                                        <span class="title text">Status: </span>
+                                                        <!-- <span class="badge rounded-pill alert-success text-success">{{ details.order_status }}</span> -->
+                                                        {% if details.order_status == 'Pending' %}
+                                                        <span class="badge rounded-pill alert-success text-success ">Pending</span>
+                                                        {% elif details.order_status == 'Shipped' %}
+                                                        <span class="badge rounded-pill alert-warning text-warning">Shipped</span>
+                                                        {% elif details.order_status == 'Delivered' %}
+                                                        <span class="badge rounded-pill alert-primary text-primary">Delivered</span>
+                                                        {% elif details.order_status == 'Cancelled' %}
+                                                        <span class="badge rounded-pill alert-danger text-danger">Cancelled</span>
+                                                        {% elif details.order_status == 'processing' %}
+                                                        <span class="badge rounded-pill alert-dark">Processing</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div> <!-- table-responsive// -->
+                        </div> <!-- col// -->
+                        <div class="col-lg-1"></div>
+                    </div>
+                    
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+        </section> <!-- content-main end// -->
+        {% endblock %}

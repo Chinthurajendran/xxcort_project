@@ -1,0 +1,191 @@
+{% extends "user_panal/base.html" %}
+{% load static %}
+{% block main %}
+<style>
+    /* Hide default radio buttons */
+    input[type="radio"] {
+        display: none;
+    }
+
+
+    .size-selector label {
+        border: 1px solid #e5e5e5;
+        color: #555;
+        height: 30px;
+        line-height: 30px;
+        min-width: 30px;
+        text-align: center;
+        text-transform: uppercase;
+        border-radius: 10%;
+    }
+
+    /* Style for selected radio buttons */
+    input[type="radio"]:checked + label {
+        background-color:#088178;
+        color: #fff;
+    }
+</style>
+<div class="page-header breadcrumb-wrap">
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="{% url 'index' %}" rel="nofollow">Home</a>
+            <span></span> <a href="#" rel="nofollow">Shop</a> 
+            <span></span> <a href="{% url 'new_collection' %}" rel="nofollow">New collection</a> 
+            <span></span> Abstract Print Patchwork Dress
+        </div>
+    </div>
+</div>
+<section class="mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product-detail accordion-detail">
+                    <div class="row mb-50">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-gallery">
+                                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                <!-- MAIN SLIDES -->
+                                <div class="product-image-slider">
+                                    <figure class="border-radius-10">
+                                        <img src="{{product_data.image1}}" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="{{product_data.image2}}" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="{{product_data.image3}}" alt="product image">
+                                    </figure>
+
+                                </div>
+                                <!-- THUMBNAILS -->
+                                <div class="slider-nav-thumbnails pl-15 pr-15">
+                                    <div><img src="{{product_data.image1}}" alt="product image"></div>
+                                    <div><img src="{{product_data.image2}}" alt="product image"></div>
+                                    <div><img src="{{product_data.image3}}" alt="product image"></div>>
+                                </div>
+                            </div>
+                            <!-- End Gallery -->
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-info">
+                                <h2 class="title-detail">{{product_data.name}}</h2>
+                                <div class="product-detail-rating">
+                                    <div class="product-rate-cover text-end">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width:90%">
+                                            </div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> (25 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix product-price-cover">
+                                    <div class="product-price primary-color float-left">
+                                        <ins><span class="text-brand">₹{{product_data.price}}</span></ins>
+                                        <span class="save-price  font-md color3 ml-15">{{product_data.offer}}% Off</span>
+                                    </div>
+                                </div>
+                                <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                <div class="short-desc mb-30">
+                                    <p>{{product_data.product_description}}</p>
+                                </div>
+                                <div class="product_sort_info font-xs mb-30">
+                                    <ul>
+                                        <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL Jazeera Brand Warranty</li>
+                                        <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy</li>
+                                        <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
+                                    </ul>
+                                </div>
+                                <form action="{% url 'cart_create' product_data.id %}" method="post">
+                                    {%csrf_token%}
+                                    <div class="attr-detail attr-size">
+                                        <strong class="mr-10">Size:</strong>
+                                        <div class="size-selector">
+                                            <input type="radio" id="size_S" name="size" value="small" required>
+                                            <label for="size_S">S</label>
+                                
+                                            <input type="radio" id="size_M" name="size" value="medium" required>
+                                            <label for="size_M">M</label>
+                                
+                                            <input type="radio" id="size_L" name="size" value="large" required>
+                                            <label for="size_L">L</label>
+                                        </div>
+                                    </div>
+                                    <div class="attr-detail">
+                                        <button type="submit" class="button button-add-to-cart" style="margin-top: 3%;">Add to cart</button>
+                                    </div>
+                                </form>
+                                
+                                
+                                <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                <div class="detail-extralink">
+                                    <div class="product-extra-link2" style="width: 100%;">
+                                        <!-- <a  href="{% url 'cart_create' product_data.id %}"><button type="submit" class="button button-add-to-cart" style="width: 428%; height: 100%; padding-top: 0px;">Add to cart</button></a> -->
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="{% url 'create_wishlist' product_data.id %}" style="margin-left: 28%; margin-top: -11%;margin-bottom: 10%;"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html" style="margin-top: -11%;"><i class="fi-rs-shuffle"></i></a>
+                                    </div>
+                                </div>
+                                <ul class="product-meta font-xs color-grey mt-50">
+                                    <li class="mb-5">Code: <a href="#">{{product_data.code}}</a></li>
+                                    <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
+                                    <li>Availability:<span class="in-stock text-success ml-5">{{product_data.stock}} Items In Stock</span></li>
+                                </ul>
+                            </div>
+                            <!-- Detail Info -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Add event listeners for quantity increment and decrement
+        document.querySelectorAll('.qty-up, .qty-down').forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                
+                // Get relevant data attributes
+                var cartId = button.getAttribute('data-cart-id');
+                var type = button.getAttribute('data-type');
+                var quantityElement = document.querySelector('.qty-val[data-cart-id="' + cartId + '"]');
+                
+                // Update quantity
+                var newQuantity = type === 'increment' ? parseInt(quantityElement.textContent) + 1 : Math.max(parseInt(quantityElement.textContent) - 1, 1);
+                quantityElement.textContent = newQuantity;
+
+                // Update subtotal asynchronously
+                updateSubtotal(cartId, newQuantity);
+            });
+        });
+
+        function updateSubtotal(cartId, newQuantity) {
+            // Use AJAX to send the updated quantity to the server and get the new subtotal
+            // Update the subtotal element with the received data
+            fetch('/update_subtotal/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken() // Include CSRF token if using Django
+                },
+                body: JSON.stringify({
+                    cartId: cartId,
+                    newQuantity: newQuantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var subtotalElement = document.querySelector('.subtotal[data-cart-id="' + cartId + '"]');
+                subtotalElement.textContent = '₹' + data.newSubtotal;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function getCSRFToken() {
+            // Retrieve CSRF token from cookies (adjust accordingly based on your framework)
+            var cookieValue = document.cookie.match('(^|;)\\s*' + 'csrftoken' + '\\s*=\\s*([^;]+)');
+            return cookieValue ? cookieValue.pop() : '';
+        }
+    });
+</script>
+{% endblock %}

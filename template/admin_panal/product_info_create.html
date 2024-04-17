@@ -1,0 +1,104 @@
+{% extends "admin_panal/base.html" %}
+{% block main %} 
+<form method="post" enctype="multipart/form-data">
+{%csrf_token%} 
+<section class="content-main">
+    <div class="row">
+        <div class="col-6">
+            <div class="content-header">
+                <h2 class="content-title">Add New Product</h2>
+            </div>
+        </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>1. General info</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Product title</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="product_name" required="">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Product Code</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="product_code" required="">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Description</label>
+                                <textarea placeholder="Type here" class="form-control" rows="4" name="product_description" required=""></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Size</label>
+                                <input type="text" placeholder="Small" class="form-control" name="small" required="" style="margin-bottom: 2%;">
+                                <input type="text" placeholder="Mediam" class="form-control" name="medium" required="" style="margin-bottom: 2%;">
+                                <input type="text" placeholder="Large" class="form-control" name="large" required="">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Product type</label>
+                                <select class="form-select" name="product" required="">
+                                    <option>Select an option</option>
+                                    {% for items in product_category %}
+                                        <option value="{{items.id}}"> {{items.name}} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>2. Pricing</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Cost in INR</label>
+                                <input type="text" placeholder="$00.0" class="form-control" style="margin-bottom: 3%;" name="price" required="">
+                                <label class="form-label">Offer</label>
+                                <input type="text" placeholder="20%" class="form-control" style="margin-bottom: 3%;" name="offer" required="">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- row.// -->
+                    <hr class="mb-4 mt-0">
+                    
+                    <hr class="mb-4 mt-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>3. Media</h6>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="mb-4">
+                                <label class="form-label">Images1</label>
+                                <input class="form-control" type="file" name="image1" required="">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Images2</label>
+                                <input class="form-control" type="file" name="image2" required="">
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Images3</label>
+                                <input class="form-control" type="file" name="image3" required="">
+                            </div>
+                        </div> <!-- col.// -->
+                    </div> <!-- .row end// -->
+                    <div>
+                        <button class="btn btn-md rounded font-sm hover-up" style="margin-left: 40%;">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section> <!-- content-main end// -->\
+</form>
+{% endblock %}

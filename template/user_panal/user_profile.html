@@ -1,0 +1,29 @@
+{% extends "user_panal/user_index.html" %}
+{% block main %} 
+<section class="content-main mt-80 mb-80">
+    <div class="card mx-auto card-login">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Account Details</h4>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <form>
+                <div class="mb-3">
+                    <input class="form-control" placeholder="Username or email" type="text"  value='{{user_data.username}}'>
+                </div> <!-- form-group// -->
+                <div class="mb-3">
+                    <input class="form-control" placeholder="Password"  type="email" value='{{user_data.email}}'>
+                </div> <!-- form-group// -->
+            </form>
+            <div class="mb-4">
+                <a href="{% url 'user_profile_edits'%}"><button type="submit" class="btn btn-primary w-100"> Edit </button></a>
+            </div> <!-- form-group// -->
+            <a href="#" id="generate_coupon_link">Generate Coupon Code</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

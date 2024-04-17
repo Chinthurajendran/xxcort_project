@@ -1,0 +1,242 @@
+{% extends "user_panal/base.html" %}
+{% load static %}
+{% block main %} 
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<section class="home-slider position-relative pt-50">
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'user_panal/assets/imgs/slider/slider-1.0.webp' %}" alt="">
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'user_panal/assets/imgs/slider/slider-2.0.webp' %}" alt="">
+          </div>
+          <div class="carousel-item">
+            <img class="animated slider-1-1" src="{% static 'user_panal/assets/imgs/slider/slider-3.0.webp' %}" alt="">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+</section>
+<section class="featured section-padding position-relative">            
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                <div class="banner-features wow fadeIn animated hover-up">
+                    <img src="{% static 'user_panal/assets/imgs/theme/icons/feature-1.png' %}" alt="">
+                    <h4 class="bg-1">Free Shipping</h4>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                <div class="banner-features wow fadeIn animated hover-up">
+                    <img src="{% static 'user_panal/assets/imgs/theme/icons/feature-2.png' %}" alt="">
+                    <h4 class="bg-3">Online Order</h4>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                <div class="banner-features wow fadeIn animated hover-up">
+                    <img src="{% static 'user_panal/assets/imgs/theme/icons/feature-3.png' %}" alt="">
+                    <h4 class="bg-2">Save Money</h4>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                <div class="banner-features wow fadeIn animated hover-up">
+                    <img src="{% static 'user_panal/assets/imgs/theme/icons/feature-4.png' %}" alt="">
+                    <h4 class="bg-4">Promotions</h4>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                <div class="banner-features wow fadeIn animated hover-up">
+                    <img src="{% static 'user_panal/assets/imgs/theme/icons/feature-5.png' %}" alt="">
+                    <h4 class="bg-5">Happy Sell</h4>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 mb-md-3 mb-lg-0">
+                <div class="banner-features wow fadeIn animated hover-up">
+                    <img src="{% static 'user_panal/assets/imgs/theme/icons/feature-6.png' %}" alt="">
+                    <h4 class="bg-6">24/7 Support</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="product-tabs section-padding position-relative wow fadeIn animated">
+    <div class="bg-square"></div>
+    <div class="container">
+        <div class="tab-header">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one" aria-selected="true">New collection</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button id="popular-button" class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-two" type="button" role="tab" aria-controls="tab-two" aria-selected="false">Bestseller
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three" aria-selected="false">Bestcategory</button> 
+                </li>
+            </ul>
+            <a href="{% url 'new_collection' %}" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a>
+        </div>
+        <!-- End nav-tabs -->
+        <div class="tab-content wow fadeIn animated" id="myTabContent">
+            <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+                <div class="row product-grid-4">
+                {% for items in collections %}
+                    <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                        <div class="product-cart-wrap mb-30">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <a href="shop-product-right.html">
+                                        <img class="default-img" src="{{items.image1}}" alt="">
+                                        <img class="hover-img" src="{{items.image2}}" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-action-1">
+                                    <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                </div>
+                                <div class="product-badges product-badges-position product-badges-mrg">
+                                    <!-- <span class="hot">Hot</span> -->
+                                </div>
+                            </div> 
+                            <div class="product-content-wrap">
+                                <div class="product-category">
+                                    <a href="shop-grid-right.html">{{items.product_type.name}}</a>
+                                </div>
+                                <h2><a href="{% url 'product_info' items.id %}">{{items.name}}</a></h2>
+                                <div class="rating-result" title="90%">
+                                    <span>
+                                        <span>{{items.offer}}%Off</span>
+                                    </span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹{{items.price}} </span>
+                                    <!-- <span class="old-price">₹{{items.price}}</span> -->
+                                </div>
+                                <div class="product-action-1 show">
+                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="{% url 'cart_create' items.id %}"><i class="fi-rs-shopping-bag-add"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+   
+            </div>
+
+            <div class="tab-pane fade" id="tab-two" role="tabpanel" aria-labelledby="tab-two">
+                <div class="row product-grid-4">
+                    {% for items in best_collections %}
+                    <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                        <div class="product-cart-wrap mb-30">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <a href="shop-product-right.html">
+                                        <img class="default-img" src="{{items.image1}}" alt="">
+                                        <img class="hover-img" src="{{items.image2}}" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-action-1">
+                                    <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                </div>
+                                <div class="product-badges product-badges-position product-badges-mrg">
+                                    <!-- <span class="hot">Hot</span> -->
+                                </div>
+                            </div> 
+                            <div class="product-content-wrap">
+                                <div class="product-category">
+                                    <a href="shop-grid-right.html">{{items.product_type.name}}</a>
+                                </div>
+                                <h2><a href="{% url 'product_info' items.id %}">{{items.name}}</a></h2>
+                                <div class="rating-result" title="90%">
+                                    <span>
+                                        <span>{{items.offer}}%Off</span>
+                                    </span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹{{items.price}} </span>
+                                    <!-- <span class="old-price">₹{{items.price}}</span> -->
+                                </div>
+                                <div class="product-action-1 show">
+                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="{% url 'cart_create' items.id %}"><i class="fi-rs-shopping-bag-add"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="tab-three">
+                <div class="row product-grid-4">
+                    {% for items in best_category %}
+                    <div class="col-lg-3 col-md-4 col-12 col-sm-6">
+                        <div class="product-cart-wrap mb-30">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <a href="shop-product-right.html">
+                                        <img class="default-img" src="{{items.image1}}" alt="">
+                                        <img class="hover-img" src="{{items.image2}}" alt="">
+                                    </a>
+                                </div>
+                                <div class="product-action-1">
+                                    <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
+                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                </div>
+                                <div class="product-badges product-badges-position product-badges-mrg">
+                                    <!-- <span class="hot">Hot</span> -->
+                                </div>
+                            </div> 
+                            <div class="product-content-wrap">
+                                <div class="product-category">
+                                    <a href="shop-grid-right.html">{{items.product_type.name}}</a>
+                                </div>
+                                <h2><a href="{% url 'product_info' items.id %}">{{items.name}}</a></h2>
+                                <div class="rating-result" title="90%">
+                                    <span>
+                                        <span>{{items.offer}}%Off</span>
+                                    </span>
+                                </div>
+                                <div class="product-price">
+                                    <span>₹{{items.price}} </span>
+                                    <!-- <span class="old-price">₹{{items.price}}</span> -->
+                                </div>
+                                <div class="product-action-1 show">
+                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="{% url 'cart_create' items.id %}"><i class="fi-rs-shopping-bag-add"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+
+            </div>
+   
+        </div>
+
+    </div>
+</section>
+
+{% endblock %} 

@@ -1,0 +1,22 @@
+{% extends "user_panal/user_index.html" %}
+{% block main %} 
+<section class="content-main mt-80 mb-80">
+    <div class="card mx-auto card-login">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Account Details</h4>
+            <form method="post">
+                {%csrf_token%}
+                <div class="mb-3">
+                    <input class="form-control" placeholder="Username or email" type="text" name="username" value='{{data.username}}' required="">
+                </div> <!-- form-group// -->
+                <div class="mb-3">
+                    <input class="form-control" placeholder="Password"  name="email" value='{{data.email}}' type="email" required="">
+                </div> <!-- form-group// -->
+                <div class="mb-4">
+                    <button type="submit" class="btn btn-primary w-100"> Update </button>
+                </div> <!-- form-group// -->
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

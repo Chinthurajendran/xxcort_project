@@ -1,0 +1,145 @@
+{% extends "admin_panal/base.html" %}
+{% load static %}
+{% block main %} 
+<section class="content-main" style="margin-left: 4%; width: 122%;">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order List </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card mb-4">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead style="font-size: larger;">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Customer name</th>
+                                    <th>Price</th>
+                                    <th>Payment status</th>
+                                    <th>Payment method</th>
+                                    <th>Order status</th>
+                                    <th>Date</th>
+                                    <th class="text-end"> Action </th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: medium;">
+                                {% for orders in order_infos%}
+                                <tr>
+                                    <!-- <td>{{ forloop.counter}}</td> -->
+                                    <td>{{ order_infos.start_index|add:forloop.counter0 }}</td>
+                                    <td><b>{{orders.user.username}}</b></td>
+                                    <td>₹{{orders.total_amount}}</td>
+                                    <td>
+                                        {% if orders.payment_method == 'COD' and orders.order_status == 'Delivered' %}
+                                        <span class="badge rounded-pill alert-primary text-primary">Amount is paid</span>
+                                        {% elif orders.payment_status == 'Pending' %}
+                                        <span class="badge rounded-pill alert-success text-success">{{ orders.payment_status }}</span>
+                                        {% elif orders.payment_status == 'Amount is paid' %}
+                                        <span class="badge rounded-pill alert-primary text-primary">{{ orders.payment_status }}</span>
+                                        {% else %}
+                                        <span class="badge rounded-pill alert-danger text-danger">{{ orders.payment_status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{orders.payment_method}}</td>
+                                {% if orders.order_status == 'Cancelled'%}
+                                    <td>{% if orders.order_status == 'Pending' %}
+                                        <span class="badge rounded-pill alert-success">Pending</span>
+                                        {% elif orders.order_status == 'Shipped' %}
+                                        <span class="badge rounded-pill alert-warning">Shipped</span>
+                                        {% elif orders.order_status == 'Delivered' %}
+                                        <span class="badge rounded-pill alert-primary">Delivered</span>
+                                        {% elif orders.order_status == 'Cancelled' %}
+                                        <span class="badge rounded-pill alert-danger">Cancelled</span>
+                                        {% endif %}
+
+                                        <!-- <span class="badge rounded-pill alert-success">{{orders.order_status}}</span> -->
+                                        <li  class="dropdown nav-item">
+                                            <a class="dropdown-toggle disabled" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">Change Status</a>
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                                <a class="dropdown-item" href="{% url 'change_status' orders.id %}?new_status=Pending">Pending</a>
+                                                <a class="dropdown-item" href="{% url 'change_status' orders.id %}?new_status=Shipped">Shipped</a>
+                                                <a class="dropdown-item" href="{% url 'change_status' orders.id %}?new_status=Delivered">Delivered</a>
+                                            </div>
+                                        </li>
+                                    </td>
+                                {% else %}
+                                    <td>{% if orders.order_status == 'Pending' %}
+                                    <span class="badge rounded-pill alert-success">Pending</span>
+                                    {% elif orders.order_status == 'Shipped' %}
+                                    <span class="badge rounded-pill alert-warning">Shipped</span>
+                                    {% elif orders.order_status == 'Delivered' %}
+                                    <span class="badge rounded-pill alert-primary">Delivered</span>
+                                    {% elif orders.order_status == 'Cancelled' %}
+                                    <span class="badge rounded-pill alert-danger">Cancelled</span>
+                                    {% endif %}
+
+                                    <!-- <span class="badge rounded-pill alert-success">{{orders.order_status}}</span> -->
+                                    <li class="dropdown nav-item">
+                                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">Change Status</a>
+                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                            <a class="dropdown-item" href="{% url 'change_status' orders.id %}?new_status=Pending">Pending</a>
+                                            <a class="dropdown-item" href="{% url 'change_status' orders.id %}?new_status=Shipped">Shipped</a>
+                                            <a class="dropdown-item" href="{% url 'change_status' orders.id %}?new_status=Delivered">Delivered</a>
+                                        </div>
+                                    </li>
+                                    </td>
+                                {% endif %}
+
+                                {% if orders.order_status == 'Cancelled'%}
+
+                                    <td>{{orders.order_date}}</td>
+                                    {% if orders.order_status == 'Delivered' %}
+                                    <td class="text-end"> <a href="{% url 'admin_refund' orders.id %}"><button disabled class="btn btn-md rounded font-sm">Return</button></a></td>
+                                    {% else %}
+                                    <td class="text-end"> <a href="{% url 'admin_order_cancel' orders.id %}"><button disabled class="btn btn-md rounded font-sm">Cancel</button></a></td>
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <td>{{orders.order_date}}</td>
+                                    {% if orders.order_status == 'Delivered' %}
+                                    <td class="text-end"> <a href="{% url 'admin_refund' orders.id %}"><button class="btn btn-md rounded font-sm">Return</button></a></td>
+                                    {% else %}
+                                    <td class="text-end"> <a href="{% url 'admin_order_cancel' orders.id %}"><button class="btn btn-md rounded font-sm">Cancel</button></a></td>
+                                    {% endif %}
+
+                                {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div> <!-- table-responsive //end -->
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+        </div>
+    </div>
+
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+
+                {% for i in order_infos.paginator.page_range %}
+                    {% if order_infos.number == i %}
+                        <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                
+            </ul>
+        </nav>
+    </div>  
+</section> <!-- content-main end// -->
+
+
+{% endblock %}
