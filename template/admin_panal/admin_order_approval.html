@@ -22,7 +22,7 @@
                         <table class="table table-hover">
                             <thead style="font-size: larger;">
                                 <tr>
-                                    <th>D</th>
+                                    <th>ID</th>
                                     <th>Customer name</th>
                                     <th>Price</th>
                                     <th>Payment status</th>
@@ -35,8 +35,7 @@
                             <tbody style="font-size: medium;">
                             {% for orders in order_approval%}
                                 <tr>
-                                    <!-- <td>{{ forloop.counter}}</td> -->
-                                    <td>{{ order_infos.start_index|add:forloop.counter0 }}</td>
+                                    <td>{{ order_approval.start_index|add:forloop.counter0 }}</td>
                                     <td><b>{{orders.user.username}}</b></td>
                                     <td>₹{{orders.total_amount}}</td>
                                     <td>
@@ -76,9 +75,9 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                    </div> <!-- table-responsive //end -->
-                </div> <!-- card-body end// -->
-            </div> <!-- card end// -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -97,7 +96,7 @@
             </ul>
         </nav>
     </div>  
-</section> <!-- content-main end// -->
+</section>
 
 
 {% endblock %}

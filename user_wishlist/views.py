@@ -58,7 +58,6 @@ def wishlist_list(request):
             Q(product_info__in=blocked_product) |
             Q(product_info__in=out_of_stock_products)
         )
-        # info = user_wishlist.objects.filter(user_info=user)
         context = {'info':info}
     except userdata.DoesNotExist:
         messages.error(request, 'User data not found.')

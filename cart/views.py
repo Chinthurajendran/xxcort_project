@@ -92,16 +92,10 @@ def cart_view(request):
     user = userdata.objects.get(email = current_email)
     blocked_categories = category.objects.filter(is_active = False)
     blocked_product = products.objects.filter(is_active = False)
-    stock_products_small = products.objects.filter(small=0)
-    stock_products_medium = products.objects.filter(medium=0)
-    stock_products_large = products.objects.filter(large=0)
 
     cart_items = Cart.objects.filter(user=user).exclude(
         Q(product_info__product_type__in=blocked_categories) |
-        Q(product_info__in=blocked_product) |
-        Q(product_info__in=stock_products_small)|
-        Q(product_info__in=stock_products_medium)|
-        Q(product_info__in=stock_products_large)
+        Q(product_info__in=blocked_product) 
     )
 
 

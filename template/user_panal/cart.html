@@ -1,17 +1,6 @@
 {% extends "user_panal/base.html" %}
 {% load static %}
 {% block main %}
-<!-- <style>
-    /* CSS styles */
-    .error-message-container{
-        background-color: #ffcccc; /* Light red background */
-        color: #cc0000; /* Dark red text color */
-        padding: 10px; /* Add padding for better readability */
-        border-radius: 5px; /* Rounded corners */
-        margin-top: 10px; /* Add margin to separate from other elements */
-    }
-</style> -->
-
 <main class="main">
     <div class="page-header breadcrumb-wrap">
         <div class="container">
@@ -22,7 +11,14 @@
             </div>
         </div>
     </div>
-    <!-- HTML template -->
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} 
     {% if messages %}
         <ul class="error-message">
             {% for error-message in messages %}
@@ -123,79 +119,6 @@
     </section>
 </main>
 
-<!-- <script>
-    function updateCartItemQuantity(cartItemId, action) {
-        const url = '/update-cart-item/';
-        const csrfToken = '{{ csrf_token }}';
-        const formData = new FormData();
-        formData.append('cart_item_id', cartItemId);
-        formData.append('action', action);
-
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': csrfToken
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const spanId = `#cart-item-value-${cartItemId}`;
-                const spanElement = document.querySelector(spanId);
-
-                if (spanElement) {
-                    spanElement.textContent = data.cart_item_value;
-
-                    // Update total subtotal
-                    updateTotalSubtotal();
-
-                    // Disable qty-up button if quantity reaches 5
-                    const qtyUpButton = document.querySelector(`[data-cartitemid="${cartItemId}"] .qty-up`);
-                    const currentQuantity = parseInt(spanElement.textContent);
-                    // console.log( currentQuantity);
-                    if (currentQuantity >= 5) {
-                        qtyUpButton.qty-up.add('disabled');
-                        qtyUpButton.setAttribute('disabled', 'disabled');
-                    } else {
-                        qtyUpButton.classList.remove('disabled');
-                        qtyUpButton.removeAttribute('disabled');
-                    }
-                }
-            } else {
-                // Display an error message on the page
-                const errorMessage = document.getElementById('error-message');
-                if (errorMessage) {
-                    errorMessage.textContent = data.error;
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            // Display a generic error message on the page
-            const errorMessage = document.getElementById('error-message');
-            if (errorMessage) {
-                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
-            }
-        });
-    }
-
-    function updateTotalSubtotal() {
-        const cartItemValues = document.querySelectorAll('.cart-item-value');
-        let totalSubtotal = 0;
-
-        cartItemValues.forEach(item => {
-            totalSubtotal += parseFloat(item.textContent.replace('₹', '')); // Assuming '₹' is the currency symbol
-        });
-
-        // Update the total subtotal in the HTML element
-        const totalSubtotalElement = document.getElementById('total-subtotal');
-        if (totalSubtotalElement) {
-            totalSubtotalElement.textContent = `₹${totalSubtotal.toFixed(2)}`;
-        }
-    }
-</script> -->
-
 <script>
     function updateCartItemQuantity(cartItemId, action) {
         const url = '/update-cart-item/';
@@ -220,12 +143,11 @@
                 if (spanElement) {
                     spanElement.textContent = data.cart_item_value;
 
-                    // Update total subtotal
                     updateTotalSubtotal();
 
-                    // Disable qty-up button if quantity reaches 5
+
                     const qtyUpButton = document.querySelector(`[data-cartitemid="${cartItemId}"] .qty-up`);
-                    const currentQuantity = parseInt(data.cart_quantity); // Get cart quantity from data
+                    const currentQuantity = parseInt(data.cart_quantity);
                     console.log(currentQuantity)
                     if (currentQuantity >= 5) {
                         qtyUpButton.classList.add('disabled');
@@ -236,13 +158,12 @@
                     }
                 }
             } else {
-                // Display an error message on the page
+
                 const errorMessageContainer = document.getElementById('error-message-container');
                 if (errorMessageContainer) {
                     errorMessageContainer.innerHTML = `<ul class="error-message"><li>${data.error}</li></ul>`;
-                    errorMessageContainer.style.display = 'block'; // Show the error message container
+                    errorMessageContainer.style.display = 'block';
                     
-                    // Hide qty-up button
                     const qtyUpButton = document.querySelector(`[data-cartitemid="${cartItemId}"] .qty-up`);
                     if (qtyUpButton) {
                         qtyUpButton.style.display = 'none';
@@ -257,19 +178,14 @@
         let totalSubtotal = 0;
 
         cartItemValues.forEach(item => {
-            totalSubtotal += parseFloat(item.textContent.replace('₹', '')); // Assuming '₹' is the currency symbol
+            totalSubtotal += parseFloat(item.textContent.replace('₹', ''));
         });
 
-        // Update the total subtotal in the HTML element
+
         const totalSubtotalElement = document.getElementById('total-subtotal');
         if (totalSubtotalElement) {
             totalSubtotalElement.textContent = `₹${totalSubtotal.toFixed(2)}`;
         }
     }
 </script>
-
-
-
- 
-    
 {% endblock %}

@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Razorpay Payment</h1>
-    <!-- Display Razorpay payment form -->
     <form action="{% url 'coupon_payment_success' %}" method="POST">
         {% csrf_token %}
         <script src="https://checkout.razorpay.com/v1/checkout.js"

@@ -30,12 +30,12 @@
                                     <th>Order status</th>
                                     <th>Date</th>
                                     <th class="text-end"> Action </th>
+                                    <th>Details</th>
                                 </tr>
                             </thead>
                             <tbody style="font-size: medium;">
                                 {% for orders in order_infos%}
                                 <tr>
-                                    <!-- <td>{{ forloop.counter}}</td> -->
                                     <td>{{ order_infos.start_index|add:forloop.counter0 }}</td>
                                     <td><b>{{orders.user.username}}</b></td>
                                     <td>₹{{orders.total_amount}}</td>
@@ -62,7 +62,6 @@
                                         <span class="badge rounded-pill alert-danger">Cancelled</span>
                                         {% endif %}
 
-                                        <!-- <span class="badge rounded-pill alert-success">{{orders.order_status}}</span> -->
                                         <li  class="dropdown nav-item">
                                             <a class="dropdown-toggle disabled" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">Change Status</a>
                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
@@ -83,7 +82,6 @@
                                     <span class="badge rounded-pill alert-danger">Cancelled</span>
                                     {% endif %}
 
-                                    <!-- <span class="badge rounded-pill alert-success">{{orders.order_status}}</span> -->
                                     <li class="dropdown nav-item">
                                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">Change Status</a>
                                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
@@ -114,13 +112,14 @@
                                     {% endif %}
 
                                 {% endif %}
+                                    <td class="text-end"> <a href="{% url 'admin_order_in_detail' orders.id  %}"><button  class="btn btn-md rounded font-sm">Details</button></a></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
-                    </div> <!-- table-responsive //end -->
-                </div> <!-- card-body end// -->
-            </div> <!-- card end// -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -139,7 +138,7 @@
             </ul>
         </nav>
     </div>  
-</section> <!-- content-main end// -->
+</section>
 
 
 {% endblock %}

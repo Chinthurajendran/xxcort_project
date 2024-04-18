@@ -4,11 +4,8 @@
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">User List </h2>
-            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+
         </div>
-        <!-- <div>
-            <input type="text" placeholder="Search order ID" class="form-control bg-white">
-        </div> -->
     </div>
     {% if messages %}
     <ul class="messages">
@@ -30,7 +27,7 @@
                     <a href="{% url 'admin_user_info_create' %}"><button class="btn btn-md rounded font-sm hover-up" style="margin-top:-94%;margin-left: 1435%;">Create</button></a>
                 </div>
             </div>
-        </header> <!-- card-header end// -->
+        </header>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -64,10 +61,10 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div> <!-- table-responsive //end -->
-        </div> <!-- card-body end// -->
-    </div> <!-- card end// -->
-</section> <!-- content-main end// -->
+            </div>
+        </div>
+    </div>
+</section>
 
 
 {% endblock %}

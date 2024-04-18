@@ -30,7 +30,7 @@
                                         <th>Order status</th>
                                         <th>Date</th>
                                         <th>Action</th>
-                                        <th>Action</th>
+                                        <th>Details</th>
                                     </tr>
                                 </thead>
                                 <tbody style="font-size: medium;">
@@ -66,7 +66,7 @@
                                         {% endif %}
                                         </td>
 
-                                        {% if orders.order_status == 'Cancelled' %}
+                                        {% if orders.order_status == 'Cancelled' or orders.order_status == 'processing' %}
                                             <td>{{orders.order_date}}</td>
                                             {% if orders.order_status == 'Delivered' %}
                                             <td class="text-end"> <a href="{% url 'refund' orders.id %}"><button disabled class="btn btn-md rounded font-sm">Return</button></a></td>
@@ -79,7 +79,6 @@
                                             <td class="text-end"> <a href="{% url 'submit_cancellation_reason' orders.id %}">
                                                 <button class="btn btn-md rounded font-sm cancel-button" data-order-id="{{ orders.id }}">Return</button></a>
                                             </td>
-                                            <!-- <td class="text-end"> <a href="{% url 'refund' orders.id %}"><button class="btn btn-md rounded font-sm">Return</button></a></td> -->
                                             {% else  %}
                                             <td class="text-end"> <a href="{% url 'submit_cancellation_reason' orders.id %}">
                                                 <button class="btn btn-md rounded font-sm cancel-button" data-order-id="{{ orders.id }}">Cancel</button></a>
@@ -90,9 +89,9 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                        </div> <!-- table-responsive //end -->
-                    </div> <!-- card-body end// -->
-                </div> <!-- card end// -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="pagination-area mt-15 mb-50">
@@ -110,19 +109,17 @@
                 </ul>
             </nav>
         </div> 
-    </section> <!-- content-main end// -->
+    </section>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
     <script>
-        // Attach event listener to a parent element
         document.addEventListener('click', function(event) {
-            // Check if the clicked element has the 'cancel-button' class
             if (event.target.classList.contains('cancel-button')) {
-                event.preventDefault(); // Prevent default link behavior
+                event.preventDefault();
                 
-                const orderId = event.target.dataset.orderId; // Get the order ID from data attribute
+                const orderId = event.target.dataset.orderId;
                 Swal.fire({
                     title: 'Enter reason for cancellation',
                     input: 'text',
@@ -142,14 +139,14 @@
                             body: JSON.stringify({ reason: reason })
                         })
                         .then(response => {
-                            console.log(response); // Log the response for debugging
+                            console.log(response);
                             if (!response.ok) {
                                 throw new Error(response.statusText);
                             }
                             return response.json();
                         })
                         .then(data => {
-                            // Reload the page upon successful submission
+
                             if (data.success) {
                                 location.reload();
                             } else {

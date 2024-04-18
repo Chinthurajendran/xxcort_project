@@ -3,7 +3,7 @@
 <html class="no-js" lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:20:36 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>XXCORT_essentials</title>
@@ -14,12 +14,12 @@
     <meta property="og:type" content="">
     <meta property="og:url" content="">
     <meta property="og:image" content="">
-    <!-- Favicon -->
+
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'user_panal/assets/imgs/theme/xxcort.png' %}">
-    <!-- Template CSS -->
+
     <link rel="stylesheet" href="{% static 'user_panal/assets/css/main.css' %}">
     <style>
-        /* Optional: Add some basic styling */
+
         .list-group {
             list-style: none;
             padding: 0;
@@ -34,7 +34,7 @@
         }
 
         .sublist {
-            margin-left: 20px; /* Adjust the margin to create an indentation for the sublist */
+            margin-left: 20px;
         }
     </style>
     <style>.messages {
@@ -50,14 +50,14 @@
         border-radius: 4px;
       }
       
-      /* Success message style */
+
       .messages li.success {
         color: #3c763d;
         background-color: #dff0d8;
         border-color: #d6e9c6;
       }
       
-      /* Error message style */
+
       .messages li.error {
         color:#e62a38 ;
         background-color: #f2dede;
@@ -70,7 +70,7 @@
 
 <body>
 
-    <!-- Quick view -->
+
     <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">              
@@ -80,7 +80,7 @@
                         <div class="col-md-6 col-sm-12 col-xs-12">
                             <div class="detail-gallery">
                                 <span class="zoom-icon"><i class="fi-rs-search"></i></span>
-                                <!-- MAIN SLIDES -->
+
                                 <div class="product-image-slider">
                                     <figure class="border-radius-10">
                                         <img src="{% static 'user_panal/assets/imgs/shop/product-16-2.jpg' %}" alt="product image">
@@ -104,7 +104,7 @@
                                         <img src="{% static 'user_panal/assets/imgs/shop/product-16-7.jpg' %}" alt="product image">
                                     </figure>
                                 </div>
-                                <!-- THUMBNAILS -->
+
                                 <div class="slider-nav-thumbnails pl-15 pr-15">
                                     <div><img src="{% static 'user_panal/assets/imgs/shop/thumbnail-3.jpg' %}" alt="product image"></div>
                                     <div><img src="{% static 'user_panal/assets/imgs/shop/thumbnail-4.jpg' %}" alt="product image"></div>
@@ -115,7 +115,7 @@
                                     <div><img src="{% static 'user_panal/assets/imgs/shop/thumbnail-9.jpg' %}" alt="product image"></div>
                                 </div>
                             </div>
-                            <!-- End Gallery -->
+
                             <div class="social-icons single-share">
                                 <ul class="text-grey-5 d-inline-block">
                                     <li><strong class="mr-10">Share this:</strong></li>
@@ -194,7 +194,7 @@
                                     <li>Availability:<span class="in-stock text-success ml-5">8 Items In Stock</span></li>
                                 </ul>
                             </div>
-                            <!-- Detail Info -->
+
                         </div>
                     </div>
                 </div>        
@@ -244,7 +244,7 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="index.html"><img src="{% static 'user_panal/assets/imgs/theme/logo xxcort.png' %}" alt="logo"></a>
+                        <a href="{% url 'index' %}"><img src="{% static 'user_panal/assets/imgs/theme/logo xxcort.png' %}" alt="logo"></a>
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
@@ -469,7 +469,7 @@
                                     <li><a class="active" href="{% url 'index' %}">Home <i class="fi-rs-angle-down"></i></a>
                                     </li>
                                     <li>
-                                        <a href="page-about.html">About</a>
+                                        <a href="#">About</a>
                                     </li>
                                     <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
                                         <ul class="sub-menu">
@@ -588,7 +588,7 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- mobile menu start -->
+
                     <nav>
                         <ul class="mobile-menu">
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="index.html">Home</a>
@@ -685,7 +685,7 @@
                             </li>
                         </ul>
                     </nav>
-                    <!-- mobile menu end -->
+
                 </div>
                 <div class="mobile-header-info-wrap mobile-header-border">
                     <div class="single-mobile-header-info mt-30">
@@ -801,7 +801,7 @@
             </div>
         </div>
     </footer>
-    <!-- Preloader Start -->
+
     <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
@@ -816,7 +816,7 @@
             </div>
         </div>
     </div>
-    <!-- Vendor JS-->
+
     <script src="{% static 'user_panal/assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
     <script src="{% static 'user_panal/assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
     <script src="{% static 'user_panal/assets/js/vendor/jquery-migrate-3.3.0.min.js' %}"></script>
@@ -837,20 +837,9 @@
     <script src="{% static 'user_panal/assets/js/plugins/jquery.vticker-min.js' %}"></script>
     <script src="{% static 'user_panal/assets/js/plugins/jquery.theia.sticky.js' %}"></script>
     <script src="{% static 'user_panal/assets/js/plugins/jquery.elevatezoom.js' %}"></script>
-    <!-- Template  JS -->
+
     <script src="{% static 'user_panal/assets/js/main.js' %}"></script>
     <script src="{% static 'user_panal/assets/js/shop.js' %}"></script>
-    
-    
-    <!-- <script src="{% static 'user_panal/assets/js/index.js' %}"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
- 
 
 </body>
-
-
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:25:49 GMT -->
 </html>

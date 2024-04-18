@@ -137,6 +137,7 @@ def send_otp(request):
         email = request.session['email']
         random_num = random.randint(100000, 999999)
         request.session['OTP_Key'] = random_num
+        print(random_num)
         try:
             send_mail(
                 'OTP AUTHENTICATING XXCORT',
@@ -542,7 +543,6 @@ def order_cancel(request, id):
         with transaction.atomic():
             # Retrieve order, checkout, and wallet objects
             cancel_order = get_object_or_404(Order_list, id=id)
-            # cancel_checkout = get_object_or_404(Checkout_list, id=id)
             wallet_info = get_object_or_404(Wallet, user=user)
 
             # Check order status and perform appropriate actions

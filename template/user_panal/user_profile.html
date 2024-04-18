@@ -14,14 +14,14 @@
             <form>
                 <div class="mb-3">
                     <input class="form-control" placeholder="Username or email" type="text"  value='{{user_data.username}}'>
-                </div> <!-- form-group// -->
+                </div>
                 <div class="mb-3">
                     <input class="form-control" placeholder="Password"  type="email" value='{{user_data.email}}'>
-                </div> <!-- form-group// -->
+                </div>
             </form>
             <div class="mb-4">
                 <a href="{% url 'user_profile_edits'%}"><button type="submit" class="btn btn-primary w-100"> Edit </button></a>
-            </div> <!-- form-group// -->
+            </div>
             <a href="#" id="generate_coupon_link">Generate Coupon Code</a>
         </div>
     </div>

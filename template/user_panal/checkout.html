@@ -150,7 +150,6 @@
                                 <thead>
                                     <tr>
                                         <th colspan="2">Product</th>
-                                        <!-- <th>Total</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -160,7 +159,6 @@
                                         <td>
                                             <h5><a href="shop-product-full.html">{{cart.product_info.name}}</a></h5> <span class="product-qty">x {{ cart.quantity}}</span>
                                         </td>
-                                        <!-- <td>₹{{  sub_total }}</td> -->
                                     </tr>
                                     {% endfor %}
                                     <tr>
@@ -188,7 +186,6 @@
                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                         <div class="payment_method">
                             <div class="mb-25">
-                                <!-- <h5>Payment</h5> -->
                             </div>
                             <div class="payment_option">
                                 <button class="btn btn-fill-out btn-block mt-30" >Place Order</button>
@@ -206,31 +203,27 @@
 
 
 <script>
-    // Retrieve quantity and offer price from HTML elements
+
     var quantity = parseInt(document.getElementById("quantity").innerText);
     var offerPrice = parseFloat(document.getElementById("offer-price").innerText);
 
-    // Calculate total price using the calculateTotalPrice function
     var totalPrice = calculateTotalPrice(quantity, offerPrice);
 
-    // Display the total price in the HTML element
     document.getElementById("total-price").innerText = totalPrice;
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<!-- jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#generate_coupon_link').click(function(event) {
-            event.preventDefault();  // Prevent the default behavior of the link
-            
-            // Send an AJAX request to generate the coupon code
+            event.preventDefault();
+        
             $.ajax({
                 type: 'GET',
                 url: '/generate_coupon/',
                 success: function(data) {
-                    // Display the coupon code using SweetAlert
+
                     Swal.fire({
                         title: 'Reference Code',
                         html: '<span style="color:red">' + data.coupon_code + '</span>',
@@ -239,7 +232,7 @@
                     });
                 },
                 error: function(xhr, textStatus, errorThrown) {
-                    // Handle errors if any
+
                     console.log('Error:', errorThrown);
                 }
             });

@@ -18,6 +18,7 @@ from django.db import transaction
 from checkout.models import Checkout_list,Order_list,OrderProduct
 from product.models import products
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from category.models import category
 
 # Create your views here.
 
@@ -212,8 +213,6 @@ def new_order_approval_list(request):
     return render(request, 'admin_panal/admin_order_approval.html',context)
 
 def order_denied(request,id):
-    current_email = request.session.get('email')
-    user = userdata.objects.get(email = current_email)
     order = get_object_or_404(Order_list, id=id)
     current_status = order.current_status
     order.order_status = current_status
@@ -223,14 +222,12 @@ def order_denied(request,id):
 
 
 def admin_order_cancel(request, id):
-    current_email = request.session.get('email')
-    user = userdata.objects.get(email = current_email)
     try:
         with transaction.atomic():
             # Retrieve order, checkout, and wallet objects
             cancel_order = get_object_or_404(Order_list, id=id)
-            # cancel_checkout = get_object_or_404(Checkout_list, id=id)
-            wallet_info = get_object_or_404(Wallet, user=user)
+            current_user = cancel_order.user
+            wallet_info = get_object_or_404(Wallet, user=current_user)
 
             # Check order status and perform appropriate actions
             if cancel_order.current_status == 'Pending':
@@ -291,59 +288,54 @@ def admin_order_cancel(request, id):
 
 def admin_refund(request, id):
     try:
-        current_email = request.session.get('email')
-        user = userdata.objects.get(email=current_email)
-        cancel_order = get_object_or_404(Order_list, id=id, user=user)
-        wallet_info = get_object_or_404(Wallet, user=user)
+        cancel_order = get_object_or_404(Order_list, id=id)
+        current_user = cancel_order.user
+        wallet_info = get_object_or_404(Wallet, user=current_user)
     
-        if cancel_order.current_status == 'Delivered':
+        order_products = OrderProduct.objects.filter(order=cancel_order)
 
-            order_products = OrderProduct.objects.filter(order=cancel_order)
-
-            for order_product in order_products:
-                product_name = order_product.product_name
-                product_size = order_product.selected_size
-                product = products.objects.get(name=product_name)  # Assuming your model is named 'Product'
-                quantity_purchased = order_product.quantity
+        for order_product in order_products:
+            product_name = order_product.product_name
+            product_size = order_product.selected_size
+            product = products.objects.get(name=product_name)  # Assuming your model is named 'Product'
+            quantity_purchased = order_product.quantity
                     
                     # Update the stock of the product for the selected size
-                current_stock = product.stock_for_size(product_size)
-                new_stock = current_stock + quantity_purchased
+            current_stock = product.stock_for_size(product_size)
+            new_stock = current_stock + quantity_purchased
 
                     # Update the stock attribute directly based on the size
-                if product_size == 'small':
-                    product.small = new_stock
-                elif product_size == 'medium':
-                    product.medium = new_stock
-                elif product_size == 'large':
-                    product.large = new_stock
+            if product_size == 'small':
+                product.small = new_stock
+            elif product_size == 'medium':
+                product.medium = new_stock
+            elif product_size == 'large':
+                product.large = new_stock
                     # Save the changes to the product
-                product.save()
+            product.save()
 
 
-            with transaction.atomic():
+        with transaction.atomic():
                 # Calculate refund amount
-                refund_amount = cancel_order.total_amount
+            refund_amount = cancel_order.total_amount
 
                 # Add refund amount to wallet balance
-                wallet_info.balance += refund_amount
-                wallet_info.save()
+            wallet_info.balance += refund_amount
+            wallet_info.save()
 
                 # Create transaction record for refund
-                Transaction.objects.create(
-                    wallet=wallet_info,
-                    amount=refund_amount,
-                    transaction_type='Refund'
-                )
+            Transaction.objects.create(
+                wallet=wallet_info,
+                amount=refund_amount,
+                transaction_type='Refund'
+            )
 
                 # Delete the order and related checkout info
-                cancel_order.order_status = 'Cancelled'
-                cancel_order.payment_status = 'Payment Cancelled '
-                cancel_order.save()
+            cancel_order.order_status = 'Cancelled'
+            cancel_order.payment_status = 'Payment Cancelled '
+            cancel_order.save()
 
-                messages.success(request, 'Order refunded successfully.')
-        else:
-            messages.error(request, 'Cannot refund order. The order must be delivered.')
+            messages.success(request, 'Order refunded successfully.')
 
     except userdata.DoesNotExist:
         messages.error(request, 'User not found.')
@@ -375,3 +367,37 @@ def change_status(request,id):
 
 
 
+def admin_order_in_detail(request, id):
+    context = {}  # Initialize context dictionary
+    try:
+        details = Order_list.objects.get(id=id)
+        Order_products = OrderProduct.objects.filter(order=details)
+
+        total_offer = 0  # Initialize total offer
+        total = 0
+
+        for product in Order_products:
+            category_name = product.category_info
+            category_info = category.objects.get(name=category_name)
+            if category_info.offer:
+                total_offer += category_info.offer 
+
+        for product_price in Order_products:
+            product_qty = product_price.quantity
+            prices = product_price.price
+            total += prices * product_qty
+
+            total_offer_saved = 0  # Initialize total offer saved
+            total_product_offer_saved = 0
+            
+            amount = max(total_offer_saved, total_product_offer_saved)
+
+        context = {
+            'details': details, 
+            'Order_products': Order_products, 
+            'total_offer': total_offer or 0,  # Ensuring default value if total_offer is None
+            'total': total
+        }
+    except Exception as e:
+        messages.error(request, f'Failed to retrieve order details: {str(e)}')
+    return render(request, 'admin_panal/admin_order_in_detail.html', context)

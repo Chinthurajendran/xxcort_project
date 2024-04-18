@@ -257,14 +257,13 @@ def add_coupon(request):
             amount = max(total_offer_saved, total_product_offer_saved)
 
             # Calculate the total offer saved from product types in the cart
-            # total_offer_saved = sum(cart_item.product_info.product_type.offer or 0 for cart_item in cart_info)
 
             if coupon.discount_percentage < amount:
                 messages.error(request, "The discount provided by the coupon is lower than the total offer saved.")
                 return redirect('check_out')
 
             # If the coupon exists and hasn't been used by the user, associate it with the user
-            # Coupons_User.objects.create(user=user, coupon=coupon)
+
             request.session['coupon_code'] = code
             messages.success(request, "Coupon added successfully.")
         except Exception as e:

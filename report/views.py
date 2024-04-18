@@ -137,7 +137,6 @@ class SalesReportView(View):
         orders = context['orders']
         for row, order in enumerate(orders, start=1):
             order_date = order.order_date.replace(tzinfo=None)
-            # date_string = order_date.strftime('%Y-%m-%d %H:%M:%S')
             date_string = order_date.strftime('%d-%m-%Y')
 
             worksheet.write(row, 0, order.id)

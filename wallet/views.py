@@ -120,7 +120,6 @@ def razorpay_wallet_payment_success(request):
 
         
         if amount > 0:
-            # messages.success(request, f"You have saved an amount of ₹{amount}.")
             pass
 
         sub_total = sum(cart_item.quantity * cart_item.product_info.price for cart_item in cart_info)

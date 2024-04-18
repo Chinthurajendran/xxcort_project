@@ -21,7 +21,7 @@
                     <a href="{% url 'admin_product_info_create' %}"><button class="btn btn-md rounded font-sm hover-up" style="margin-top:-20%;margin-left: 290%;">Create</button></a>
                 </div>
             </div>
-        </header> <!-- card-header end// -->
+        </header>
         <div class="card-body" style="overflow:auto; overflow-x: scroll; height: 400px;">
             <div class="table-responsive" style="width: 150%;">
                 <table class="table table-hover">
@@ -71,16 +71,16 @@
                             {% else %}
                                 <a href="{% url 'products_block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Unblock</a>
                             {% endif %}</td>
-                            <!-- <td><span class="badge rounded-pill alert-warning">Pending</span></td> -->
+
                             <td><a href="{% url 'admin_product_info_edit' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Edit</button></a></td>
                             <td><a href="{% url 'admin_product_info_delete' items.id %}"><button class="btn btn-md rounded font-sm hover-up">Delete</button></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-            </div> <!-- table-responsive //end -->
-        </div> <!-- card-body end// -->
-    </div> <!-- card end// -->
+            </div>
+        </div>
+    </div>
 
     <div class="pagination-area mt-15 mb-50">
         <nav aria-label="Page navigation example">
@@ -97,5 +97,5 @@
             </ul>
         </nav>
     </div>     
-</section> <!-- content-main end// -->
+</section>
 {% endblock %}

@@ -56,7 +56,7 @@
     </div>
 
     <div class="container mt-5" style="width: 50%;height: 50%; margin-left: 5%;">
-        <!-- Dropdown button for selecting graph type -->
+
         <div class="btn-group btn-group-toggle" data-toggle="buttons" style="margin-bottom: 10%;">
           <label class="btn btn-primary active">
             <input type="radio" name="graphType" id="yearlyOption" autocomplete="off" checked> Yearly
@@ -66,10 +66,10 @@
           </label>
         </div>
     
-        <!-- Canvas for the monthly chart -->
+
         <canvas id="monthlyChart" width="400" height="400" style="display: none;"></canvas>
     
-        <!-- Canvas for the yearly chart -->
+
         <canvas id="yearlyChart" width="400" height="400" style="display: none;"></canvas>
     </div>
 
@@ -126,13 +126,13 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
 
-  <!-- Include jQuery and Chart.js -->
+
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
   <script>
     $(document).ready(function() {
-      // Function to render the monthly chart
+
       function renderMonthlyChart() {
         $.ajax({
           url: "{% url 'generate_monthly_data' %}",
@@ -170,7 +170,7 @@
         });
       }
 
-      // Function to render the yearly chart
+
       function renderYearlyChart() {
         $.ajax({
           url: "{% url 'generate_yearly_data' %}",
@@ -208,20 +208,20 @@
         });
       }
 
-      // Render initial charts
+  
       renderMonthlyChart();
       renderYearlyChart();
 
       $('#monthlyChart').show();
-      // Dropdown event listener
+
       $('#yearlyOption').click(function() {
-        // Hide monthly chart, show yearly chart
+
         $('#monthlyChart').hide();
         $('#yearlyChart').show();
       });
 
       $('#monthlyOption').click(function() {
-        // Hide yearly chart, show monthly chart
+
         $('#yearlyChart').hide();
         $('#monthlyChart').show();
       });

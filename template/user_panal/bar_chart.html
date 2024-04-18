@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Order Statistics</title>
-    <!-- Include Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -25,8 +24,8 @@
     <canvas id="yearlyChart"></canvas>
 
     <script>
-        var monthlyData = {{ monthly_data|safe }};
-        var yearlyData = {{ yearly_data|safe }};
+        var monthlyData = { monthly_data , safe }
+        var yearlyData = { yearly_data , safe }
     
         var monthlyChartCtx = document.getElementById('monthlyChart').getContext('2d');
         var monthlyChart = new Chart(monthlyChartCtx, {
@@ -89,11 +88,11 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var chartData = {};  // To store chart data
+        var chartData = {};
         
-        // Function to fetch and update data for the selected graph type
+
         function updateChart(graphType) {
-            // AJAX request to fetch data based on selected graph type
+
             $.ajax({
                 url: '/fetch_data/',
                 type: 'POST',
@@ -110,10 +109,9 @@
             });
         }
         
-        // Function to render the chart
+
         function renderChart() {
-            // Code to render chart using chartData
-            // Example:
+
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'bar',
@@ -128,12 +126,12 @@
                     }]
                 },
                 options: {
-                    // Chart options
+
                 }
             });
         }
         
-        // Event listener for dropdown change
+
         $('#yearlyOption').click(function() {
             updateChart('yearly');
         });

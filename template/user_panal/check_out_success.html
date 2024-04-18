@@ -16,11 +16,11 @@
                 icon: 'success',
                 title: 'Checkout Successful!',
                 text: 'Your order has been placed successfully.',
-                showConfirmButton: true,  // Show the OK button
-                confirmButtonText: 'OK',  // Customize the OK button text
-                allowOutsideClick: false  // Prevent closing the alert by clicking outside
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
             }).then(function(result) {
-                // Redirect the user to another page when they click OK
+
                 if (result.isConfirmed) {
                     window.location.href = '/order_details';
                 }
