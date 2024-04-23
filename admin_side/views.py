@@ -80,10 +80,10 @@ def admin_user_info_edit(request,id):
 def admin_user_info_create(request):
     if 'username' not in  request.session:
         return redirect('admin_login')
-    if request.method=='POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
+    if request.method == "POST" :
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
         try:
             if userdata.objects.filter(username=username) or userdata.objects.filter(email = email).exists():
                 messages.error(request, "Username or email already exists.")

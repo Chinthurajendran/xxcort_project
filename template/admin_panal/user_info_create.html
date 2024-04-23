@@ -10,8 +10,9 @@
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
             </ul>
-            {% endif %}ST">
-                {%csrf_token%} 
+            {% endif %}
+            <form method="POST" action="{% url 'admin_user_info_create' %}">
+                {% csrf_token %} 
                 <div class="mb-3">
                     <input id="login__username" type="text" name="username" class="form-control" placeholder="Username" required>
                 </div>
