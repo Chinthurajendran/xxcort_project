@@ -1,8 +1,32 @@
 {% load static %}
+<style>.messages {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .messages li {
+    padding: 10px;
+    margin: 0 0 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  
+  .messages li.success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+  }
+  
+  .messages li.error {
+    color:#e62a38 ;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+  }
+</style>
+
 <!DOCTYPE HTML>
 <html lang="en">
-
-
 <head>
     <meta charset="utf-8">
     <title>XXCORT_essentials Admin</title>
@@ -24,6 +48,15 @@
         <section class="content-main mt-80 mb-80">
             <div class="card mx-auto card-login">
                 <div class="card-body">
+                    <div class="message">
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
                     <h4 class="card-title mb-4">Admin Panal</h4>
                     <form method="POST" action="{% url 'admin_login' %}">
                         {%csrf_token%} 
@@ -32,15 +65,6 @@
                         </div>
                         <div class="mb-3">
                             <input class="form-control" placeholder="Password" name="password" type="password">
-                        </div>
-                        <div class="message">
-                            {% if messages %}
-                            <ul class="messages">
-                                {% for message in messages %}
-                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
                         </div>
                         <div class="mb-4">
                             <button type="submit" class="btn btn-primary w-100"> Login </button>

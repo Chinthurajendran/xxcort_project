@@ -57,8 +57,8 @@ def product_type_create(request):
             else:
                 data = category(name = category_name,description = category_description,offer =offer)
                 data.save()
+                messages.success(request, 'Category created successfully.')
                 return redirect('product_type')
-            messages.success(request, 'Category created successfully.')
     except Exception as e:
         messages.error(request, f'Failed to create category: {str(e)}')
     return render(request, 'admin_panal/product_type_create.html',{'massage':massage})

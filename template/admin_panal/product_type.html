@@ -42,7 +42,7 @@
                             <td>{{forloop.counter}}</td>
                             <td><b>{{items.name}}</b></td>
                             <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template>{{items.description}}</td>
-                            <td><b>{{items.offer}}</b></td>
+                            <td><b>₹{{items.offer}}</b></td>
                             <td>                
                             {% if items.is_active %}
                                 <a href="{% url 'category_block_user' items.id %}" class="btn btn-md rounded font-sm hover-up">Block</a>
