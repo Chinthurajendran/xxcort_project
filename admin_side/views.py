@@ -401,3 +401,8 @@ def admin_order_in_detail(request, id):
     except Exception as e:
         messages.error(request, f'Failed to retrieve order details: {str(e)}')
     return render(request, 'admin_panal/admin_order_in_detail.html', context)
+
+
+def admin_page404 (request,exception):
+    return render(request, 'admin_panal/admin_page404.html')
+

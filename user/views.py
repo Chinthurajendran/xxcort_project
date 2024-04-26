@@ -716,4 +716,6 @@ def submit_cancellation_reason(request, id):
 
 
 
+def page404 (request,exception):
+    return render(request, 'user_panal/page404.html')
 
