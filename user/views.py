@@ -23,6 +23,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 import json
+from decouple import config
 
 # Create your views here.
 
@@ -124,6 +125,7 @@ def signup(request):
 
     return render(request, 'user_panal/signup.html')
 
+
 def validate_password(password):
     # Check if password is at least 6 characters long, includes one number, and has no spaces
     return bool(re.match(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$', password))
@@ -132,32 +134,36 @@ def validate_password(password):
 def google_oauth_callback(request):
     return redirect('index')
 
+
 def send_otp(request):
     if 'email' in request.session:
         email = request.session['email']
-        random_num = random.randint(100000, 999999)
+        random_num = random.randint(1000, 9999)
         request.session['OTP_Key'] = random_num
         print(random_num)
         try:
             send_mail(
-                'OTP AUTHENTICATING XXCORT',
+                "OTP AUTHENTICATING XXCORT",
                 f"{random_num} -OTP",
-                'chinthurajendran143@gmail.com',
+                "chinthurajendran143@gmail.com",  # Your Gmail address
                 [email],
-                fail_silently =False,
+                auth_user=config('EMAIL_HOST_USER'),  # Your Gmail address
+                auth_password=config('EMAIL_HOST_PASSWORD'),  # Your App Password
+                fail_silently=False,
             )
             return redirect('verification')
         except Exception as e:
-                messages.error(request, f'Error occurred during OTP sending: {str(e)}')
+            messages.error(request, f"Error sending email: {e}")
     else:
         messages.error(request, 'Email not found in session.')
-    return render(request,'user_panal/send_otp.html')
-
+    return render(request, 'user_panal/send_otp.html')
 
 def verification(request):
     if request.method == 'POST':
+        print('chinthu')
         try:
             if str(request.session['OTP_Key']) != str(request.POST['otp']):
+                messages.error(request, "Invalid OTP. Please try again.")
                 print(request.session['OTP_Key'], request.POST['otp'])
             else:
                 log_obj = userdata(username=request.session['username'],
@@ -176,7 +182,7 @@ def resend_otp(request):
         del request.session['OTP_Key']
         
         try:
-            random_num = random.randint(100000,999999)
+            random_num = random.randint(1000,9999)
             request.session['OTP_Key'] = random_num
             send_mail(
             
