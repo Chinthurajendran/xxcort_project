@@ -145,10 +145,10 @@ def send_otp(request):
             send_mail(
                 "OTP AUTHENTICATING XXCORT",
                 f"{random_num} -OTP",
-                "chinthurajendran143@gmail.com",  # Your Gmail address
+                "chinthurajendran143@gmail.com",
                 [email],
-                auth_user=config('EMAIL_HOST_USER'),  # Your Gmail address
-                auth_password=config('EMAIL_HOST_PASSWORD'),  # Your App Password
+                # auth_user=config('EMAIL_HOST_USER'),
+                # auth_password=config('EMAIL_HOST_PASSWORD'),
                 fail_silently=False,
             )
             return redirect('verification')
