@@ -403,6 +403,4 @@ def admin_order_in_detail(request, id):
     return render(request, 'admin_panal/admin_order_in_detail.html', context)
 
 
-def admin_page404 (request,exception):
-    return render(request, 'admin_panal/admin_page404.html')
 

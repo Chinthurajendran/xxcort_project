@@ -23,6 +23,4 @@ urlpatterns = [
     path("order_denied/<id>",views.order_denied,name="order_denied"),
 
     path('admin_order_in_detail/<id>',views.admin_order_in_detail,name="admin_order_in_detail"),
-
-    
 ]

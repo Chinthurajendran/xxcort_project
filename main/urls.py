@@ -20,6 +20,8 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from user.views import page404 as user_404
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('user.urls')),
@@ -40,8 +42,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')), 
 ]
 
-handler404 = 'user.views.page404'
-handler404 = 'admin_side.views.admin_page404'
+handler404 = user_404
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)

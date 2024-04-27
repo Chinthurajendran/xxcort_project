@@ -99,8 +99,6 @@ def signup(request):
         password = request.POST.get('password')
         re_password = request.POST.get('re_password')
         email = request.POST.get('email')
-        
-        
         # Check if a user with the same username or email exists
         try:
             existing_user = userdata.objects.filter(Q(username=username) | Q(email=email), delete=True)
